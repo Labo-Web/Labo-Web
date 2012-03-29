@@ -1,4 +1,3 @@
-var CaseSize, CanvasW, CanvasH; 
 var Engine = {};
 Engine.Map = {};
 Engine.Param =  {};
@@ -36,6 +35,8 @@ function init(){
         Engine.Tiles[1].src = './img/road.jpg';      
 		Engine.Tiles[2] = new Image();
         Engine.Tiles[2].src = './img/grass.jpg';
+		Engine.Tiles[3] = new Image();
+        Engine.Tiles[3].src = './img/tire.jpg';
 		
 		Engine.DrawMap();
 		}
@@ -56,4 +57,8 @@ for (y = 0; y <29 ; y++) {
 			Engine.ctx.drawImage(texture,x*Engine.Param.CaseSize,y*Engine.Param.CaseSize)
 		}
 		}
+};
+Engine.DumpMap = function ()
+{
+	document.getElementById('gameframe').innerHTML=JSON.stringify(Engine.Map);
 }
