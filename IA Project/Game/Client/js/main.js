@@ -100,14 +100,17 @@ Engine.DrawMap= function () {
 
 //Function permettant de générer un json en fonction des textures de la map
 Engine.DumpMap = function () {
-	document.getElementById('gameframe').innerHTML=JSON.stringify(Engine.Map);
+	document.getElementById('info').innerHTML=JSON.stringify(Engine.Map);
 }
 Engine.NewMap= function()
 {
+	Engine.Map.cases={};
     for (y = 0; y < Engine.Param.CanvasH / Engine.Param.CaseSize; y++) {
+		Engine.Map.cases[y]={};
         for (x = 0; x < Engine.Param.CanvasW / Engine.Param.CaseSize; x++) {
             Engine.Map.cases[y][x]=0;
         }
     }
+	Engine.DumpMap();
     Engine.DrawMap();
 }
