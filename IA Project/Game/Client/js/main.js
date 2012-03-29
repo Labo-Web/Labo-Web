@@ -77,9 +77,9 @@ Engine.ChangeCase = function(elm) {
 //Méthode permettant de contruire la map dans le canvas au chargement de la page
 Engine.DrawMap= function () {
 	//Boucle permettant de parcourir la hauteur du canvas
-	for (y = 0; y < 29 ; y++) {
+	for (y = 0; y < Engine.Param.CanvasH / Engine.Param.CaseSize ; y++) {
 		//Boucle permettant de parcourir la hauteur du canvas
-        for (x = 0; x < 20; x++) {
+        	 for (x = 0; x < Engine.Param.CanvasW / Engine.Param.CaseSize; x++) {
 			//Déclaration de la texture
 			var texture;
 			//Déclaration de la case 
@@ -101,4 +101,13 @@ Engine.DrawMap= function () {
 //Function permettant de générer un json en fonction des textures de la map
 Engine.DumpMap = function () {
 	document.getElementById('gameframe').innerHTML=JSON.stringify(Engine.Map);
+}
+Engine.NewMap= function()
+{
+    for (y = 0; y < Engine.Param.CanvasH / Engine.Param.CaseSize; y++) {
+        for (x = 0; x < Engine.Param.CanvasW / Engine.Param.CaseSize; x++) {
+            Engine.Map.cases[y][x]=0;
+        }
+    }
+    Engine.DrawMap();
 }
