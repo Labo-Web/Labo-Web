@@ -1,6 +1,26 @@
 //Déclaration l'objet Engine
 var Engine = {};
 
+//json pour afficher la voiture en fonction de coordonnée
+var myJson = {
+		"voiture" : [
+			{
+				"id" : 1,
+				"texture" : 0, 
+				"x" : 90,
+				"y" : 90,
+				"angle" : 45
+			},
+			{
+				"id" : 2,
+				"texture" : 1, 
+				"x" : 300,
+				"y" : 78,
+				"angle" : 90
+			}
+		]
+	};
+	
 //Déclaration d'un objet Map
 Engine.Map = {};
 
@@ -12,6 +32,9 @@ Engine.Camera = {};
 
 //Déclaration d'un tableau pour les images
 Engine.Tiles = new Array();
+
+//Déclaration d'un tableau image voiture
+Engine.Voitures = new Array();
 
 //Function lancée quand la page est chargée (onload dans HTML)
 function init(){
@@ -32,6 +55,7 @@ function init(){
 		
 		//Définie la taille d'une case
         Engine.Param.CaseSize=10
+		Engine.Param.CaseSizeV=30
         
 		//Définie les différentes images pour les textures
         Engine.Tiles[0] = new Image();
@@ -42,10 +66,38 @@ function init(){
         Engine.Tiles[2].src = './img/sand.jpg';
 		Engine.Tiles[3] = new Image();
         Engine.Tiles[3].src = './img/tire.jpg';
+
+		//Définie les texture des voitures
+		Engine.Voitures[0] = new Image();
+		Engine.Voitures[0].src = './img/voiture.jpg';
+		Engine.Voitures[1] = new Image();
+		Engine.Voitures[1].src = './img/voiture2.jpg';
 		
 		//On lance la méthode DrawMap
 		Engine.DrawMap();
+		Engine.DrawVoiture();
 		}
+}
+
+Engine.DrawVoiture = function() {
+	
+	for (elm in myJson.voiture) {
+		var x = myJson.voiture[elm].x;
+		var y = myJson.voiture[elm].y;
+		
+		var rotate = myJson.voiture[elm].angle;
+		
+		var textureVoiture = myJson.voiture[elm].texture;
+		var texture = Engine.Voitures[textureVoiture];
+		
+		//alert(x);
+		//alert(y);
+		//alert(textureVoiture);
+		//alert(texture);
+
+		Engine.ctx.drawImage(texture,x,y)
+		Engine.ctx.rotate(rotate);
+	}
 }
 
 //Methode de modification de la case au clic(appeller dans le html)

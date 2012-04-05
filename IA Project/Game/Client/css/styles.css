@@ -1,0 +1,18 @@
+#container{
+	position: relative;
+	margin-top: 20px;
+}
+
+#mapframe {
+	margin-bottom: 20px;
+}
+
+#autoframe{
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+#gameframe{
+	border: 1px solid black;
+}
