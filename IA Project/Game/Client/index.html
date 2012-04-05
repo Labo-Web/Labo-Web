@@ -4,12 +4,14 @@
     <title>Game</title>
 	<script type="text/javascript" src="./js/main.js"></script>
 	<script type="text/javascript" src="./js/map.json"></script>
+	<script type="text/javascript" src="./js/voitures.json"></script>
 	<link type="text/css" rel="stylesheet" href="./css/main.css" media="screen">
   </head>
   <body onload="init();">
 	<div id="container" class="container_16">
 		<div id="mapframe">
-			<canvas id="autoframe" width="800" height="600"></canvas>
+			<div id="conteneurvoiture">
+			</div>
 	    	<canvas id="gameframe" width="800" height="600" onclick="Engine.ChangeCase(this)"></canvas>
 	    </div>
 		<div id="control">

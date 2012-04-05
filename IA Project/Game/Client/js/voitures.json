@@ -1,0 +1,18 @@
+Engine.Voiture = {
+		"voiture" : [
+			{
+				"id" : 1,
+				"texture" : 0, 
+				"x" : 90,
+				"y" : 90,
+				"angle" : 100
+			},
+			{
+				"id" : 2,
+				"texture" : 1, 
+				"x" : 300,
+				"y" : 78,
+				"angle" : -45
+			}
+		]
+	};

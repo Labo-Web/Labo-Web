@@ -2,24 +2,6 @@
 var Engine = {};
 
 //json pour afficher la voiture en fonction de coordonnée
-var myJson = {
-		"voiture" : [
-			{
-				"id" : 1,
-				"texture" : 0, 
-				"x" : 90,
-				"y" : 90,
-				"angle" : 45
-			},
-			{
-				"id" : 2,
-				"texture" : 1, 
-				"x" : 300,
-				"y" : 78,
-				"angle" : 90
-			}
-		]
-	};
 	
 //Déclaration d'un objet Map
 Engine.Map = {};
@@ -81,22 +63,48 @@ function init(){
 
 Engine.DrawVoiture = function() {
 	
-	for (elm in myJson.voiture) {
-		var x = myJson.voiture[elm].x;
-		var y = myJson.voiture[elm].y;
+	var jsonVoiture = Engine.Voiture.voiture;
+	
+	for (elm in jsonVoiture) {
 		
-		var rotate = myJson.voiture[elm].angle;
+		var id = jsonVoiture[elm].id;
 		
-		var textureVoiture = myJson.voiture[elm].texture;
+		//Récupération de la en fonction de l'idtexture du json
+		var textureVoiture = jsonVoiture[elm].texture;
 		var texture = Engine.Voitures[textureVoiture];
 		
-		//alert(x);
-		//alert(y);
-		//alert(textureVoiture);
-		//alert(texture);
+		var Width = texture.width;
+		var Height = texture.height;
+		
+		//Création et Assignement les attributs aux canvas auto-générés
+		var generateCanvas = document.createElement('canvas');
+		generateCanvas.setAttribute ("class", "voiture");
+		generateCanvas.setAttribute ("id", "voiture"+id);
+		generateCanvas.setAttribute ("width", Width);
+		generateCanvas.setAttribute ("height", Height);
+		
+		//Ajout de l'élément canvas dans le div conteneurvoiture
+		var div = document.getElementById("conteneurvoiture");
+		div.appendChild(generateCanvas);
+		
+		//Récupération dans le dom du canvas correspondant à l'id du json
+		var canvas = document.getElementById("voiture"+id);
+		var context = canvas.getContext("2d");
+		
+		//Récupération des coordonnées au centre de l'image
+		var X = jsonVoiture[elm].x - Width / 2;
+		var Y = jsonVoiture[elm].y - Height / 2;
+		
+		//Création de l'image dans le canvas
+		context.drawImage(texture,0,0)
+		
+		//Positionnement du canvas sur la carte avec x, y et angle
+		canvas.style.left = X;
+		canvas.style.top = Y;
+		canvas.style.webkitTransform = "rotate("+ jsonVoiture[elm].angle+"deg)";
 
-		Engine.ctx.drawImage(texture,x,y)
-		Engine.ctx.rotate(rotate);
+		
+		
 	}
 }
 
