@@ -10,7 +10,7 @@ import math
 class Voiture(object):
     
     '''
-    Avec @property, je crée des getters public + des champs privés !
+    Avec @property, je crée des getters public + des champs privés ! -> AH NON !
     '''
     
     @property
@@ -21,14 +21,13 @@ class Voiture(object):
     def position(self):
         return self._position
     
-    @property
-    def vitesse(self):
+    
+    def _get_vitesse(self):
         return self._vitesse
     
     @property
     def angle(self):
-        return self._angle
-    
+        return self._angle    
     
     
 
@@ -43,18 +42,16 @@ class Voiture(object):
    
     def _set_angle_volant(self, value):
         if value > self.angle_volant_max():
-            print("valeur supérieure autorisé : %s" % value )
-            print("valeur max : %s" % Voiture.angle_volant_max() )
             self._angle_volant = Voiture.angle_volant_max()
         elif value < self.angle_volant_min():
-            print("valeur inférieure autorisé : %s" % value )
             self._angle_volant = Voiture.acceleration_min()
         else :
-            print("valeur autorisé : %s" % value )
             self._angle_volant = value
-    
 
     angle_volant = property(_get_angle_volant, _set_angle_volant)
+    get_vitesse = property(_get_vitesse)
+
+
 
     '''
     Ici on défini les valeur max et min de tous nos champs
@@ -78,14 +75,13 @@ class Voiture(object):
     
     @staticmethod
     def acceleration_min():
-        return 0
+        return 0.0
     
     @staticmethod
     def acceleration_max():
-        return 2
+        return 2.0
         
-    
-    
+         
     def __init__(self, id, position, vitesse=0, angle=0, angle_volant=0):
         '''
         Constructor
@@ -107,14 +103,19 @@ class Voiture(object):
         if acceleration < self.acceleration_min():
             acceleration = self.acceleration_min()
         
-        self.vitesse = self.vitesse * acceleration
+        if self._vitesse == 0 and acceleration >= 1.0:
+            self._vitesse = acceleration
+        elif self._vitesse == 0 and acceleration <= 1.0:
+            self._vitesse = 0
+        else: 
+            self._vitesse = self._vitesse * acceleration
         
-        if self.vitesse > self.vitesse_max():
-            self.vitesse = self.vitesse_max()
-        if self.vitesse < self.vitesse_min():
-            self.vitesse = self.vitesse_min()
-        
-        return self.vitesse
+        if self._vitesse > self.vitesse_max():
+            self._vitesse = self.vitesse_max()
+        if self._vitesse < self.vitesse_min():
+            self._vitesse = self.vitesse_min()
+            
+        return self._vitesse
             
             
             
@@ -122,22 +123,20 @@ class Voiture(object):
         '''
         ajout de l'angle du volant à l'angle de la voiture
         '''
-        self.angle = self.angle + self.angle_volant
-        if self.angle > 360:
-            self.angle = self.angle % 360
-            
-        return self.angle
+        self._angle = self._angle + self.angle_volant
+        if self._angle > 360:
+            self._angle = self._angle % 360
+        return self._angle
         
            
             
     def avancer(self):
         '''
-        calcul et retour de la position sur les axes x ete y
+        calcul et retour de la position sur les axes x et y
         '''
-        radian_angle = math.radians(self.angle)
-        
-        self.position["x"] = self.vitesse * math.cos(radian_angle)
-        self.position["y"] = self.vitesse * math.sin(radian_angle)
+        radian_angle = math.radians(self._angle)
+        self.position["x"] = int(round(self._vitesse * math.cos(radian_angle)))
+        self.position["y"] = int(round(self._vitesse * math.sin(radian_angle)))
         
         return self.position
     
