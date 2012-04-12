@@ -48,6 +48,8 @@ function init(){
         Engine.Tiles[2].src = './img/sand.jpg';
 		Engine.Tiles[3] = new Image();
         Engine.Tiles[3].src = './img/tire.jpg';
+        Engine.Tiles[4] = new Image();
+        Engine.Tiles[4].src = './img/start-end.jpg';
 
 		//Définie les texture des voitures
 		Engine.Voitures[0] = new Image();
