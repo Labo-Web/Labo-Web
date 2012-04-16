@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from sqlalchemy import engine_from_config
 from pyramid.config import Configurator
 from server.views import socketio_service
 from server.views import index
@@ -16,9 +15,6 @@ def simple_route(config, name, url, fn):
 
 def main(global_config, **settings):
     config = Configurator()
-
-    engine = engine_from_config(settings, 'sqlalchemy.')
-    DBSession.configure(bind=engine)
 
     simple_route(config, 'index', '/', index)
 
