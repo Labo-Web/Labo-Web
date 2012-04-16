@@ -72,8 +72,6 @@ Engine.log = function log(msg) {
 
 Engine.DrawVoiture = function() {
 	
-	Engine.log("DrawVoiture");
-	
 	var jsonVoiture = Engine.Voiture.voiture;
 	
 	for (elm in jsonVoiture) {

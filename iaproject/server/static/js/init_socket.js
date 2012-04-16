@@ -42,6 +42,7 @@
         socket.on('map_json', function(data) {
         	Engine.Map = JSON.parse(data);
           	log('Map Received: ' + Engine.Map);
+          	Engine.DrawMap();
           	socket.emit('map_loaded', '{"init_map": true}')
         });
 
@@ -56,7 +57,7 @@
 		// Frames du jeu (JSON des nouvelles coordonnées à dessiner)
         socket.on('frame', function(data) {
         	Engine.Voiture = JSON.parse(data);
-          	log('Voitures Frame Received: ' + data);
+          	//log('Voitures Frame Received: ' + data);
         	update_ui();
         });
         
@@ -84,8 +85,6 @@
       	 * ICI doit se redessiner l'ensemble des éléments mobiles du décor
       	 * --> Faire bouger les voitures
       	 */
-      	
-      	Engine.DrawMap();
       	Engine.DrawVoiture();
       }
       

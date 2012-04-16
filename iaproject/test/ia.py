@@ -9,8 +9,9 @@ from iaproject.game.voiture import Voiture
 
 class PlayerWrapper(object):
     
-    def __init__(self, voiture_id, y_position):
-        position = {"x":0,"y":y_position}
+    def __init__(self, voiture_id, texture_id, y_position):
+        self.texture_id = texture_id
+        position = {"x":200,"y":y_position}
         self.voiture = Voiture(voiture_id, position)
         
     
@@ -18,19 +19,26 @@ class PlayerWrapper(object):
         raise RunNotImplementedException("Implemente run mongolien")
     
     
-    def get_frame_value(self, texture=0, id=0 ):
-        return {"id" : id , "texture"  : texture , "x" : self.voiture.position['x'] ,"y" : self.voiture.position['y'] ,"angle" : self.voiture.angle }
-    
+    def get_frame_value(self):
+        json = {"id": self.voiture.id, 
+                "texture": self.texture_id, 
+                "x": self.voiture.position['x'],
+                "y": self.voiture.position['y'],
+                "angle": self.voiture.angle 
+                }
+        print "JSON FRAME VALUE", json
+        return json
+
+TypeError
         
 class GameTest(PlayerWrapper):
     
     def run(self):
-        self.voiture.accelerer(1.6)
-    
-    
-    
-
-
-    
+        print "RUN !"
+        if self.voiture._get_vitesse() < 50:
+            self.voiture.accelerer(1.1)
+        self.voiture.avancer()
+        self.voiture._set_angle_volant(20)
+        self.voiture.tourner()
     
     

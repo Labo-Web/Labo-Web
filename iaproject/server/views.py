@@ -1,4 +1,5 @@
 #coding=utf-8
+from iaproject.test.ia import GameTest
 from socketio import socketio_manage
 from socketio.mixins import BroadcastMixin
 from socketio.namespace import BaseNamespace
@@ -15,7 +16,7 @@ def index(request):
 class GameNamespace(BaseNamespace, BroadcastMixin):
         
     @staticmethod
-    def frame_rate(rate=60):
+    def frame_rate(rate=25):
         try:
             assert isinstance(rate, int)
             assert rate > 0
@@ -41,21 +42,19 @@ class GameNamespace(BaseNamespace, BroadcastMixin):
         générées par le moteur de jeu
         '''
         print "Start event | message received :", msg
-        self.draw_id = 0
-        
+        gevent.sleep(seconds=3)
         def main_loop():
+            self.players = [GameTest(voiture_id=1, texture_id=0, y_position=500), GameTest(2, 1, 350)]
+            self.players_json = {"voiture" : [] }
             while self.socket.connected:
-                self.draw_id+=1
-                print "Loop ID =", self.draw_id
-                with open(PROJECT_PATH+'/static/js/voitures'+str(self.draw_id)+'.json', 'r') as voitures_json: 
-                    self.voitures = json.loads(voitures_json.read())
-                self.emit('frame', json.dumps(self.voitures))
+                for player in self.players:
+                    player.run()
+                    self.players_json["voiture"].append(player.get_frame_value())
+                print "Sent JSON=", json.dumps(self.players_json)
+                self.emit('frame', json.dumps(self.players_json))
                 print "frame emitted !"
-                if self.draw_id == 8:
-                    print "stop there !"
-                    self.kill_local_jobs()
-                print "sleeping ..."
-                gevent.sleep(GameNamespace.frame_rate())
+                self.players_json["voiture"] = []
+                gevent.sleep(GameNamespace.frame_rate(10))
         self.spawn(main_loop)
         
     def recv_initialize(self):
