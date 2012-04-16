@@ -1,0 +1,70 @@
+/*
+Theme Name: The Smoke City
+Theme URI: http://aubindesign.com/photo
+Description: theme totalement fou et réussie pour un blog photo qui fera fureur d'ici 3 ans.
+Author: AubinDesign
+Version: O.9
+License: GNU General Public License
+License URI: license.txt
+Tags: grey, black
+*/
+
+/*
+
+Title:		AubinDesign screen styles and IE7/win fixes
+
+Author: 	aubin.lorieux@gmail.com
+
+Copyright:  2009, AubinDesign, LLC. All rights resevered (please don't re-use without permission).
+
+
+
+                 _|_|    _|    _|  _|_|_|    _|_|_|  _|      _|  
+
+               _|    _|  _|    _|  _|    _|    _|    _|_|    _|  
+
+               _|_|_|_|  _|    _|  _|_|_|      _|    _|  _|  _|  
+
+               _|    _|  _|    _|  _|    _|    _|    _|    _|_|  
+
+               _|    _|    _|_|    _|_|_|    _|_|_|  _|      _|  
+
+                                                                 
+
+                                                                 
+
+                                                                      
+
+          _|_|_|    _|_|_|_|    _|_|_|  _|_|_|    _|_|_|  _|      _|  
+
+          _|    _|  _|        _|          _|    _|        _|_|    _|  
+
+          _|    _|  _|_|_|      _|_|      _|    _|  _|_|  _|  _|  _|  
+
+          _|    _|  _|              _|    _|    _|    _|  _|    _|_|  
+
+          _|_|_|    _|_|_|_|  _|_|_|    _|_|_|    _|_|_|  _|      _|  
+
+                                                                      
+
+                                                                                                                
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+@import "styles.css";
+
+@import "reset.css";
+
+@import "960_16_col.css";
+
+@import "text.css";

@@ -2,12 +2,12 @@
 <html>
 <head>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-  <script src="socket.io.js"></script>
+  <script src="/static/socket.io.js"></script>
   <script>
     WEB_SOCKET_SWF_LOCATION = 'WebSocketMain.swf';
   </script>
   <script>
-    var conn = null;
+    var socket = null;
     $(function() {
 
       function log(msg) {
@@ -31,7 +31,7 @@
         // but you will lose multiplexing.
         io.j = [];
         io.sockets = [];
-        conn = io.connect('http://' + window.location.host + '/', {
+        socket = io.connect('http://' + window.location.host + '/', {
                   //'force new connection': true,
                   transports: transports,
                   rememberTransport: false
@@ -39,28 +39,29 @@
 
         log('Connecting...');
 
-        conn.on('connect', function() {
+        socket.on('connect', function() {
           log('Connected.');
+          socket.emit('connect', 'youhou !!!')
           update_ui();
         });
 
-        conn.on('message', function(data) {
+        socket.on('message', function(data) {
           log('Received: ' + data);
         });
 
-        conn.on('disconnect', function(data) {
+        socket.on('disconnect', function(data) {
           log('Disconnected.');
-          conn = null;
+          socket = null;
           update_ui();
         });
       }
 
       function disconnect() {
-        if (conn != null) {
+        if (socket != null) {
           log('Disconnecting...');
 
-          conn.disconnect();
-          conn = null;
+          socket.disconnect();
+          socket = null;
 
           update_ui();
         }
@@ -69,11 +70,11 @@
       function update_ui() {
         var msg = '';
 
-        if (conn == null || !conn.socket || !conn.socket.connected) {
+        if (socket == null || !socket.socket || !socket.socket.connected) {
           msg = 'disconnected';
           $('#connect').text('Connect');
         } else {
-          msg = 'connected (' + conn.socket.transport.name + ')';
+          msg = 'connected (' + socket.socket.transport.name + ')';
           $('#connect').text('Disconnect');
         }
 
@@ -81,7 +82,7 @@
       }
 
       $('#connect').click(function() {
-        if (conn == null) {
+        if (socket == null) {
           connect();
         } else {
           disconnect();
@@ -94,7 +95,7 @@
       $('form').submit(function() {
         var text = $('#text').val();
         log('Sending: ' + text);
-        conn.send(text);
+        socket.send(text);
         $('#text').val('').focus();
         return false;
       });
