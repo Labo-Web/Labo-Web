@@ -37,7 +37,7 @@ class GameNamespace(BaseNamespace, BroadcastMixin):
         
     def on_start(self, msg):
         '''
-        Démarre la partie avec notre boucle d'envoi des coordonnées des voitures 
+        Démarre la partie avec notre boucle d'envoi des coordonnées des voitures
         générées par le moteur de jeu
         '''
         print "Start event | message received :", msg

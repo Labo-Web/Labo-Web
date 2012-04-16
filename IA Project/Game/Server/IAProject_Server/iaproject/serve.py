@@ -1,4 +1,3 @@
-from gevent import monkey
 from pyramid.paster import get_app
 from socketio.server import SocketIOServer
 
