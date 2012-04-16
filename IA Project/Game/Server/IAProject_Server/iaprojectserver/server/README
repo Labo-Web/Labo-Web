@@ -1,5 +1,15 @@
-A sample pyramid application using the minimum required for a real-time chat up without persistance
+ouvrir le CMD
 
-To get the app running:
-python setup.py develop
-python run.py
+ajouter le chemin suivant au path (variable d'environnement)
+C:\Python27\Scripts
+
+> easy_install pip
+
+Telecharger puis installer le .exe de gevent en fonction de la version de votre Python
+lien : http://www.lfd.uci.edu/~gohlke/pythonlibs/
+Pour un Python installé en x64 en version 2.7, prendre le package gevent-0.13.7.win-amd64-py2.7.?exe
+
+> pip install gevent-socketio pyramid greenlet
+
+
+
