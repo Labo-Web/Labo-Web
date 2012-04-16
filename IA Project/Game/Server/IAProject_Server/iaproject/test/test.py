@@ -4,8 +4,8 @@ Created on 5 Apr 2012
 @author: Thibault
 '''
 
-from iaprojectserver.action import Action
-from iaprojectserver.voiture import Voiture
+from iaproject.game.action import Action
+from iaproject.game.voiture import Voiture
 import unittest
 
 
@@ -109,6 +109,10 @@ class TestActionFonctions(unittest.TestCase):
         self.action.avancer_voiture()
     
         self.assertEqual(self.voiture._position, {'y':7, 'x':6}, "test position voiture : echec")
+
+
+
+
 
 if __name__ == '__main__':
     unittest.main()

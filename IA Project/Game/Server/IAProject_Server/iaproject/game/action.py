@@ -4,7 +4,7 @@ Created on 12 Apr 2012
 @author: Thibault
 '''
 
-from iaprojectserver.voiture import Voiture
+from iaproject.game.voiture import Voiture
 
 
 

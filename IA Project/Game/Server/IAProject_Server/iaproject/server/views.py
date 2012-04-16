@@ -28,7 +28,7 @@ class GameNamespace(BaseNamespace, BroadcastMixin):
     def on_init(self, msg):
         with open(PROJECT_PATH+'/static/js/map.json', 'r') as map_json: 
             self.map = json.loads(map_json.read())
-            
+        
         with open(PROJECT_PATH+'/static/js/voitures.json', 'r') as voitures_json: 
             self.voitures = json.loads(voitures_json.read())
         
