@@ -7,6 +7,9 @@
 	<script type="text/javascript" src="/static/js/main.js"></script>
 	<script type="text/javascript" src="/static/js/init_socket.js"></script>
 	<link type="text/css" rel="stylesheet" href="/static/css/main.css" media="screen">
+    <script>
+		WEB_SOCKET_SWF_LOCATION = '/static/WebSocketMain.swf';
+	</script>
   </head>
   <body>
 	<div id="container" class="container_16">
