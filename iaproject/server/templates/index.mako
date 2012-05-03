@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
   <head>
    	<meta http-equiv="content-type" content="text/html; charset=utf-8"/> 
@@ -9,7 +10,7 @@
   	</script>
 	<script type="text/javascript" src="/static/js/main.js"></script>
 	<script type="text/javascript" src="/static/js/init_socket.js"></script>
-	<link type="text/css" rel="stylesheet" href="/static/css/main.css" media="screen">
+	<link type="text/css" rel="stylesheet" href="/static/css/main.css" media="screen"/>
   </head>
   <body>
 	<div id="container" class="container_16">
