@@ -4,6 +4,9 @@
     <title>Game</title>
   	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 	<script type="text/javascript" src="/static/js/socket.io.js"></script>
+	<script>
+    	WEB_SOCKET_SWF_LOCATION = '/static/WebSocketMain.swf';
+  	</script>
 	<script type="text/javascript" src="/static/js/main.js"></script>
 	<script type="text/javascript" src="/static/js/init_socket.js"></script>
 	<link type="text/css" rel="stylesheet" href="/static/css/main.css" media="screen">

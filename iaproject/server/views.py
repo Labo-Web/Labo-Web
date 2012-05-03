@@ -54,7 +54,7 @@ class GameNamespace(BaseNamespace, BroadcastMixin):
                 self.emit('frame', json.dumps(self.players_json))
                 print "frame emitted !"
                 self.players_json["voiture"] = []
-                gevent.sleep(GameNamespace.frame_rate(10))
+                gevent.sleep(seconds=0.05)
         self.spawn(main_loop)
         
     def recv_initialize(self):

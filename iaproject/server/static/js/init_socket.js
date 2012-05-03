@@ -1,4 +1,5 @@
     var socket = null;
+    var cptData=0;
     $(document).ready(function() {
       function log(msg) {
         var control = $('#log');
@@ -34,11 +35,11 @@
           /**
            * DEMARRAGE DU JEU
            */
-          // L'event initialise la connexion et démarre la partie
+          // L'event initialise la connexion et dï¿½marre la partie
           socket.emit('init', '{"players" : [{"id": 1, "username": "toto"}, {"id": 2, "username": "titi"}]}')
         });
 
-		// Récupération du JSON de la Map
+		// Rï¿½cupï¿½ration du JSON de la Map
         socket.on('map_json', function(data) {
         	Engine.Map = JSON.parse(data);
           	log('Map Received: ' + Engine.Map);
@@ -46,7 +47,7 @@
           	socket.emit('map_loaded', '{"init_map": true}')
         });
 
-		// Récupération du JSON des voitures
+		// Rï¿½cupï¿½ration du JSON des voitures
         socket.on('voitures_json', function(data) {
         	Engine.Voiture = JSON.parse(data);
           	log('Voitures Received: ' + data);
@@ -54,14 +55,16 @@
           	socket.emit('start', '{"init_voitures": true}')
         });
 		
-		// Frames du jeu (JSON des nouvelles coordonnées à dessiner)
+		// Frames du jeu (JSON des nouvelles coordonnï¿½es ï¿½ dessiner)
         socket.on('frame', function(data) {
         	Engine.Voiture = JSON.parse(data);
           	//log('Voitures Frame Received: ' + data);
+          	cptData++;
+          	document.getElementById("log").innerHTML=cptData;
         	update_ui();
         });
         
-        // Fin de la partie (ou déconnexion forcée)
+        // Fin de la partie (ou dï¿½connexion forcï¿½e)
         socket.on('disconnect', function(data) {
           log('Disconnected.');
           socket = null;
@@ -82,7 +85,7 @@
 
       function update_ui() {
       	/**
-      	 * ICI doit se redessiner l'ensemble des éléments mobiles du décor
+      	 * ICI doit se redessiner l'ensemble des ï¿½lï¿½ments mobiles du dï¿½cor
       	 * --> Faire bouger les voitures
       	 */
       	Engine.DrawVoiture();
