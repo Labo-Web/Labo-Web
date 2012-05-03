@@ -1,3 +1,4 @@
 pyramid
 gevent-socketio
 gevent-websocket
+mongoengine==0.6.7
