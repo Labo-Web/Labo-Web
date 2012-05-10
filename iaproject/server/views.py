@@ -1,6 +1,7 @@
 #coding=utf-8
-from iaproject.test.ia import GameTest
+from iaproject.game.map import Position
 from iaproject.game.zone import Zone
+from iaproject.test.ia import GameTest
 from socketio import socketio_manage
 from socketio.mixins import BroadcastMixin
 from socketio.namespace import BaseNamespace
@@ -37,7 +38,7 @@ class GameNamespace(BaseNamespace, BroadcastMixin):
         self.emit("map_json", json.dumps(self.map))
         
         # --- CARS
-        self.players = [GameTest(1, 0, {"x": 200, "y": 90}), GameTest(2, 1, {"x": 300, "y": 78})]
+        self.players = [GameTest(1, 0, Position(200, 90)), GameTest(2, 1, Position(300, 78))]
         self.players_json = {"voiture" : [] }
         
         for player in self.players:
@@ -48,7 +49,7 @@ class GameNamespace(BaseNamespace, BroadcastMixin):
         self.players_json["voiture"] = []
         
         # --- ZONES
-        self.zones = [Zone(1, {"x": 200, "y": 90}), Zone(2, {"x": 300, "y": 78})]
+        self.zones = [Zone(1, Position(200, 90), 90), Zone(2, Position(300,78), 45)]
         self.zones_json = {"zone" : [] }
         
         for zone in self.zones:
@@ -61,8 +62,8 @@ class GameNamespace(BaseNamespace, BroadcastMixin):
         for player in self.players:
             player.run()
             for zone in self.zones:
-                if player.zoneDistance(zone.position.x, zone.position.y):
-                    player.bonusDistance(zone.bonuses)
+                if player.voiture.zoneDistance(zone.position.x, zone.position.y):
+                    player.voiture.bonusDistance(zone.bonuses)
             
             self.players_json["voiture"].append(player.get_frame_value())
         print "Sent JSON=", json.dumps(self.players_json)

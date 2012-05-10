@@ -23,8 +23,8 @@ class PlayerWrapper(object):
     def get_frame_value(self):
         json = {"id": self.voiture.id, 
                 "texture": self.texture_id, 
-                "x": self.voiture.position['x'],
-                "y": self.voiture.position['y'],
+                "x": self.voiture.position.x,
+                "y": self.voiture.position.y,
                 "angle": self.voiture.angle 
                 }
         print "JSON FRAME VALUE", json
