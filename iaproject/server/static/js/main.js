@@ -146,7 +146,6 @@ Engine.ChangeCase = function(elm) {
 };
 
 //Méthode permettant de contruire la map dans le canvas au chargement de la page
->>>>>>> 23a7be74154ef012804daeb30f9f75dd0164b9ed
 Engine.DrawMap= function () {
 	//Boucle permettant de parcourir la hauteur du canvas
 	for (y = 0; y < Engine.Param.CanvasH / Engine.Param.CaseSize ; y++) {
