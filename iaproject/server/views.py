@@ -1,5 +1,6 @@
 #coding=utf-8
 from iaproject.test.ia import GameTest
+from iaproject.game.zone import Zone
 from socketio import socketio_manage
 from socketio.mixins import BroadcastMixin
 from socketio.namespace import BaseNamespace
@@ -34,7 +35,40 @@ class GameNamespace(BaseNamespace, BroadcastMixin):
             self.voitures = json.loads(voitures_json.read())
         
         self.emit("map_json", json.dumps(self.map))
-        self.emit("voitures_json", json.dumps(self.voitures))
+        
+        # --- CARS
+        self.players = [GameTest(1, 0, {"x": 200, "y": 90}), GameTest(2, 1, {"x": 300, "y": 78})]
+        self.players_json = {"voiture" : [] }
+        
+        for player in self.players:
+            self.players_json["voiture"].append(player.get_frame_value())
+        
+        #self.emit("voitures_json", json.dumps(self.voitures))
+        self.emit("voitures_json", json.dumps(self.players_json))
+        self.players_json["voiture"] = []
+        
+        # --- ZONES
+        self.zones = [Zone(1, {"x": 200, "y": 90}), Zone(2, {"x": 300, "y": 78})]
+        self.zones_json = {"zone" : [] }
+        
+        for zone in self.zones:
+            self.zones_json["zone"].append(zone.get_frame_value())
+        
+        self.emit("zones_json", json.dumps(self.zones_json))
+        self.zones_json["zone"] = []
+        
+    def game_run(self):
+        for player in self.players:
+            player.run()
+            for zone in self.zones:
+                if player.zoneDistance(zone.position.x, zone.position.y):
+                    player.bonusDistance(zone.bonuses)
+            
+            self.players_json["voiture"].append(player.get_frame_value())
+        print "Sent JSON=", json.dumps(self.players_json)
+        self.emit('frame', json.dumps(self.players_json))
+        print "frame emitted !"
+        self.players_json["voiture"] = []
         
     def on_start(self, msg):
         '''
@@ -44,16 +78,8 @@ class GameNamespace(BaseNamespace, BroadcastMixin):
         print "Start event | message received :", msg
         gevent.sleep(seconds=3)
         def main_loop():
-            self.players = [GameTest(voiture_id=1, texture_id=0, y_position=500), GameTest(2, 1, 350)]
-            self.players_json = {"voiture" : [] }
             while self.socket.connected:
-                for player in self.players:
-                    player.run()
-                    self.players_json["voiture"].append(player.get_frame_value())
-                print "Sent JSON=", json.dumps(self.players_json)
-                self.emit('frame', json.dumps(self.players_json))
-                print "frame emitted !"
-                self.players_json["voiture"] = []
+                self.game_run()
                 gevent.sleep(seconds=0.05)
         self.spawn(main_loop)
         
