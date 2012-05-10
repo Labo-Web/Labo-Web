@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 from pyramid.config import Configurator
 from iaproject.server.views import index, socketio_service
-from iaproject.server.models import DBSession
 
 def simple_route(config, name, url, fn):
     """ Function to simplify creating routes in pyramid 

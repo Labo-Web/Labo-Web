@@ -91,6 +91,7 @@ class Voiture(object):
         self._vitesse = vitesse
         self._angle = angle
         self._angle_volant = angle_volant
+        self._hasBonus = False
     
     
         
@@ -127,9 +128,30 @@ class Voiture(object):
         if self._angle > 360:
             self._angle = self._angle % 360
         return self._angle
+    
+    def zoneDistance(self, posX, posY):
+        zoneDist = math.sqrt( pow(self._position.x - posX, 2) + pow(self._position.y - posY, 2) )
         
+        if zoneDist < 2:
+            return True
+        
+        return False
+    
+    def bonusDistance(self, bonuses):
+        for bonus in bonuses:
+            bonusDist = math.sqrt( pow(self._position.x - bonus.position.x, 2) + pow(self._position.y - bonus.position.y, 2) )
+        
+            if bonusDist < 2:
+                self.bindBonus(bonus)
+                
+    def bindBonus(self, bonus):
+        self.bonus = bonus
+        self.hasBonus = True
+        
+    def useBonus(self):
+        self.hasBonus = False
+        # TODO : FINISH !
            
-            
     def avancer(self):
         '''
         calcul et retour de la position sur les axes x et y

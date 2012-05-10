@@ -33,3 +33,8 @@ class Action(object):
     def tourner_volant_voiture(self, angle_volant):
         angle_volant = self.voiture.angle_volant = angle_volant
         return angle_volant
+    
+    def useBonus(self):
+        if self.voiture.hasBonus:
+            self.voiture.useBonus()
+            

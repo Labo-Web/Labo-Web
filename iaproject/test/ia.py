@@ -9,10 +9,11 @@ from iaproject.game.voiture import Voiture
 
 class PlayerWrapper(object):
     
-    def __init__(self, voiture_id, texture_id, y_position):
+    def __init__(self, voiture_id, texture_id, position):
         self.texture_id = texture_id
-        position = {"x":200,"y":y_position}
-        self.voiture = Voiture(voiture_id, position)
+        #self.position = {"x":200,"y":position}
+        self.position = position
+        self.voiture = Voiture(voiture_id, self.position, 0, 45)
         
     
     def run(self):
