@@ -1,26 +1,26 @@
-//Dï¿½claration l'objet Engine
+//Déclaration l'objet Engine
 var Engine = {};
 
-//json pour afficher la voiture en fonction de coordonnï¿½e
+//json pour afficher la voiture en fonction de coordonnée
 	
-//Dï¿½claration d'un objet Map
+//Déclaration d'un objet Map
 Engine.Map = {};
 
-//Dï¿½claration d'un objet Param
+//Déclaration d'un objet Param
 Engine.Param = {};
 
-//Dï¿½claration d'un objet Camera
+//Déclaration d'un objet Camera
 Engine.Camera = {};
 
-//Dï¿½claration d'un tableau pour les images
+//Déclaration d'un tableau pour les images
 Engine.Tiles = new Array();
 
-//Dï¿½claration d'un tableau image voiture
+//Déclaration d'un tableau image voiture
 Engine.Voitures = new Array();
 
-//Function lancï¿½e quand la page est chargï¿½e (onload dans HTML)
+//Function lancée quand la page est chargée (onload dans HTML)
 function init(){
-	//Dï¿½claration de la variable sï¿½lï¿½ctionnant l'ï¿½lï¿½ment canvas
+	//Déclaration de la variable séléctionnant l'élément canvas
     var canvas = document.getElementById('gameframe');
 
 	//Permet de tester si navigateur capable de faire tourner du canvas
@@ -31,15 +31,15 @@ function init(){
 		//Stock le context du canvas dans un objet
         Engine.ctx = canvas.getContext('2d'); 
 		
-		//Dï¿½finie la largeur et hauteur du canvas
+		//Définie la largeur et hauteur du canvas
         Engine.Param.CanvasW = parseInt(canvas.getAttribute("width")) ;
         Engine.Param.CanvasH = parseInt(canvas.getAttribute("height"));
 		
-		//Dï¿½finie la taille d'une case
+		//Définie la taille d'une case
         Engine.Param.CaseSize=10
 		Engine.Param.CaseSizeV=30
         
-		//Dï¿½finie les diffï¿½rentes images pour les textures
+		//Définie les différentes images pour les textures
         Engine.Tiles[0] = new Image();
         Engine.Tiles[0].src = '/static/img/grass.jpg';
         Engine.Tiles[1] = new Image();
@@ -51,115 +51,106 @@ function init(){
         Engine.Tiles[4] = new Image();
         Engine.Tiles[4].src = '/static/img/start-end.jpg';
 
-		//Dï¿½finie les texture des voitures
+		//Définie les texture des voitures
 		Engine.Voitures[0] = new Image();
 		Engine.Voitures[0].src = '/static/img/voiture.jpg';
 		Engine.Voitures[1] = new Image();
 		Engine.Voitures[1].src = '/static/img/voiture2.jpg';
 		
-		//On lance la mï¿½thode DrawMap
+		//On lance la méthode DrawMap
 		Engine.DrawMap();
 		Engine.DrawVoiture();
-		}
+	}
+		
 }
-
-
-Engine.log = function log(msg) {
-    var control = $('#engine_log');
-    control.html(control.html() + msg + '<br/>');
-    control.scrollTop(control.scrollTop() + 1000);
-  }
 
 Engine.DrawVoiture = function() {
 	
 	var jsonVoiture = Engine.Voiture.voiture;
 	
-	for (elm in jsonVoiture) {
+	//Récupération dans le dom du canvas correspondant à l'id du json
+	var canvas = document.getElementById("voiture");
+	var context = canvas.getContext("2d");
+	context.save();
+	
+	for (elm in jsonVoiture) {	
 		
 		var id = jsonVoiture[elm].id;
-		
-		//Rï¿½cupï¿½ration de la en fonction de l'idtexture du json
+
+		//Récupération de la en fonction de l'idtexture du json
 		var textureVoiture = jsonVoiture[elm].texture;
 		var texture = Engine.Voitures[textureVoiture];
-		
+
 		var Width = texture.width;
 		var Height = texture.height;
 		
-		//Crï¿½ation et Assignement les attributs aux canvas auto-gï¿½nï¿½rï¿½s
-		var generateCanvas = document.createElement('canvas');
-		generateCanvas.setAttribute ("class", "voiture");
-		generateCanvas.setAttribute ("id", "voiture"+id);
-		generateCanvas.setAttribute ("width", Width);
-		generateCanvas.setAttribute ("height", Height);
+		//Récupération des coordonnées au centre de l'image
+		var x = jsonVoiture[elm].x;
+		var y = jsonVoiture[elm].y;
+		var X = jsonVoiture[elm].x + Width / 2;
+		var Y = jsonVoiture[elm].y + Height / 2;
 		
-		//Ajout de l'ï¿½lï¿½ment canvas dans le div conteneurvoiture
-		var div = document.getElementById("conteneurvoiture");
-		div.appendChild(generateCanvas);
-		
-		//Rï¿½cupï¿½ration dans le dom du canvas correspondant Ã  l'id du json
-		var canvas = document.getElementById("voiture"+id);
-		var context = canvas.getContext("2d");
-		
-		//Rï¿½cupï¿½ration des coordonnï¿½es au centre de l'image
-		var X = jsonVoiture[elm].x - Width / 2;
-		var Y = jsonVoiture[elm].y - Height / 2;
-		
-		//Crï¿½ation de l'image dans le canvas
-		context.drawImage(texture,0,0)
+		//Création de l'image dans le canvas
 		
 		//Positionnement du canvas sur la carte avec x, y et angle
-		canvas.style.left = X;
-		canvas.style.top = Y;
+		//canvas.style.left = X;
+		//canvas.style.top = Y;
+		context.translate(Y, X);
+		context.rotate(jsonVoiture[elm].angle * Math.PI/180);
 		
-		//TODO
-		//rotation du canvas entier plutot que via css
-		canvas.style.webkitTransform = "rotate("+ jsonVoiture[elm].angle+"deg)";
+		context.drawImage(texture, y - Y, x - X, Width, Height);
+		context.restore();
 		
-		
+		//canvas.style.webkitTransform = "rotate("+ jsonVoiture[elm].angle+"deg)";
 		
 	}
+}
+
+//Change la position de l'image
+Engine.ModifVoiture = function () {
+	
 }
 
 //Methode de modification de la case au clic(appeller dans le html)
 Engine.ChangeCase = function(elm) {
 	
-	//Dï¿½clare une variable x, y dï¿½finissant la quand on clique la valeur x dans la fenÃªtre
+	//Déclare une variable x, y définissant la quand on clique la valeur x dans la fenêtre
 	var clickX = window.event.x-elm.offsetLeft;
 	var clickY = window.event.y-elm.offsetTop;
 	
-	//Retourne l'entier infï¿½rieur(floor) x, y de la case
+	//Retourne l'entier inférieur(floor) x, y de la case
 	var CaseX = Math.floor(clickX/Engine.Param.CaseSize);
 	var CaseY = Math.floor(clickY/Engine.Param.CaseSize);
 	
-	//Incrï¿½ment dans l'objet Engine.Map par coordonnï¿½e
+	//Incrément dans l'objet Engine.Map par coordonnée
 	Engine.Map.cases[CaseY][CaseX]++;
 	
-	//Dï¿½claration de la variable case comprennant l'int du type de case
+	//Déclaration de la variable case comprennant l'int du type de case
 	var Case = Engine.Map.cases[CaseY][CaseX];
 	
-	//Dï¿½claration de la variable rï¿½cupï¿½rant la texture
+	//Déclaration de la variable récupérant la texture
 	var texture = Engine.Tiles[Case];
 	
-	//Test permettant de dï¿½terminer si pas de texture dï¿½finir la texture par dï¿½faut : 0
+	//Test permettant de déterminer si pas de texture définir la texture par défaut : 0
 	if(texture == undefined)
 		Engine.Map.cases[CaseY][CaseX]=0;
 	Engine.DrawMap();
 };
 
-//Mï¿½thode permettant de contruire la map dans le canvas au chargement de la page
+//Méthode permettant de contruire la map dans le canvas au chargement de la page
 Engine.DrawMap= function () {
 	//Boucle permettant de parcourir la hauteur du canvas
 	for (y = 0; y < Engine.Param.CanvasH / Engine.Param.CaseSize ; y++) {
 		//Boucle permettant de parcourir la hauteur du canvas
         	 for (x = 0; x < Engine.Param.CanvasW / Engine.Param.CaseSize; x++) {
-			//Dï¿½claration de la texture
+			//Déclaration de la texture
 			var texture;
-			//Dï¿½claration de la case 
+			//Déclaration de la case 
 			var Case = 0; 
 			
 			//Try catch : 
-			// - Rï¿½cupï¿½re la valeur du json y,x
-			// - rï¿½cupï¿½re la texture en fonction de la valeur du json
+			// - Récupére la valeur du json y,x
+			// - récupère la texture en fonction de la valeur du json
 			try{
 				Case = Engine.Map.cases[y][x];
                 texture = Engine.Tiles[Case];
@@ -170,7 +161,7 @@ Engine.DrawMap= function () {
 	}
 };
 
-//Function permettant de gï¿½nï¿½rer un json en fonction des textures de la map
+//Function permettant de générer un json en fonction des textures de la map
 Engine.DumpMap = function () {
 	document.getElementById('info').innerHTML=JSON.stringify(Engine.Map);
 }
