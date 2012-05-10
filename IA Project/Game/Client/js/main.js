@@ -22,6 +22,10 @@ Engine.Voitures = new Array();
 function init(){
 	//Déclaration de la variable séléctionnant l'élément canvas
     var canvas = document.getElementById('gameframe');
+	var canvas2 = document.getElementById('voiture');
+	
+	//Applique le contexte au canvas 2
+	Engine.context = canvas2.getContext("2d");
 
 	//Permet de tester si navigateur capable de faire tourner du canvas
     if (canvas.getContext){
@@ -60,54 +64,54 @@ function init(){
 		//On lance la méthode DrawMap
 		Engine.DrawMap();
 		Engine.DrawVoiture();
-		}
+	}
+		
 }
 
 Engine.DrawVoiture = function() {
 	
 	var jsonVoiture = Engine.Voiture.voiture;
 	
-	for (elm in jsonVoiture) {
+	//Récupération dans le dom du canvas correspondant à l'id du json
+	Engine.context.clearRect(0,0,800,600);
+	Engine.context.save();
+	
+	for (elm in jsonVoiture) {	
 		
 		var id = jsonVoiture[elm].id;
-		
+
 		//Récupération de la en fonction de l'idtexture du json
 		var textureVoiture = jsonVoiture[elm].texture;
 		var texture = Engine.Voitures[textureVoiture];
-		
+
 		var Width = texture.width;
 		var Height = texture.height;
 		
-		//Création et Assignement les attributs aux canvas auto-générés
-		var generateCanvas = document.createElement('canvas');
-		generateCanvas.setAttribute ("class", "voiture");
-		generateCanvas.setAttribute ("id", "voiture"+id);
-		generateCanvas.setAttribute ("width", Width);
-		generateCanvas.setAttribute ("height", Height);
-		
-		//Ajout de l'élément canvas dans le div conteneurvoiture
-		var div = document.getElementById("conteneurvoiture");
-		div.appendChild(generateCanvas);
-		
-		//Récupération dans le dom du canvas correspondant à l'id du json
-		var canvas = document.getElementById("voiture"+id);
-		var context = canvas.getContext("2d");
-		
 		//Récupération des coordonnées au centre de l'image
-		var X = jsonVoiture[elm].x - Width / 2;
-		var Y = jsonVoiture[elm].y - Height / 2;
+		var x = jsonVoiture[elm].x;
+		var y = jsonVoiture[elm].y;
+		var X = jsonVoiture[elm].x + Width / 2;
+		var Y = jsonVoiture[elm].y + Height / 2;
 		
 		//Création de l'image dans le canvas
-		context.drawImage(texture,0,0)
 		
 		//Positionnement du canvas sur la carte avec x, y et angle
-		canvas.style.left = X;
-		canvas.style.top = Y;
-		canvas.style.webkitTransform = "rotate("+ jsonVoiture[elm].angle+"deg)";
-
+		//canvas.style.left = X;
+		//canvas.style.top = Y;
+		Engine.context.translate(Y, X);
+		Engine.context.rotate(jsonVoiture[elm].angle * Math.PI/180);
 		
+		Engine.context.drawImage(texture, y - Y, x - X, Width, Height);
+		Engine.context.restore();
+		
+		//canvas.style.webkitTransform = "rotate("+ jsonVoiture[elm].angle+"deg)";
 		
 	}
+}
+
+//Change la position de l'image
+Engine.ModifVoiture = function () {
+	
 }
 
 //Methode de modification de la case au clic(appeller dans le html)
