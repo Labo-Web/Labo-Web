@@ -64,6 +64,7 @@ function init(){
 		//On lance la méthode DrawMap
 		Engine.DrawMap();
 		Engine.DrawVoiture();
+		
 	}
 		
 }
@@ -72,7 +73,10 @@ Engine.DrawVoiture = function() {
 	
 	var jsonVoiture = Engine.Voiture.voiture;
 	
-	//Récupération dans le dom du canvas correspondant à l'id du json
+	//Permet de reinitialiser le canvas
+	Engine.context.setTransform(1, 0, 0, 1, 0, 0);
+	
+	//
 	Engine.context.clearRect(0,0,800,600);
 	Engine.context.save();
 	
@@ -83,35 +87,37 @@ Engine.DrawVoiture = function() {
 		//Récupération de la en fonction de l'idtexture du json
 		var textureVoiture = jsonVoiture[elm].texture;
 		var texture = Engine.Voitures[textureVoiture];
-
+		
+		//Recup hauteur l'argeur image
 		var Width = texture.width;
 		var Height = texture.height;
+		
+		//Convertie angle en radian
+		var angle = jsonVoiture[elm].angle * Math.PI/180;
 		
 		//Récupération des coordonnées au centre de l'image
 		var x = jsonVoiture[elm].x;
 		var y = jsonVoiture[elm].y;
-		var X = jsonVoiture[elm].x + Width / 2;
-		var Y = jsonVoiture[elm].y + Height / 2;
 		
-		//Création de l'image dans le canvas
+		//Centre de l'image
+		var tw = Width / 2;
+		var th = Height / 2;
 		
-		//Positionnement du canvas sur la carte avec x, y et angle
-		//canvas.style.left = X;
-		//canvas.style.top = Y;
-		Engine.context.translate(Y, X);
-		Engine.context.rotate(jsonVoiture[elm].angle * Math.PI/180);
-		
-		Engine.context.drawImage(texture, y - Y, x - X, Width, Height);
+		//Translation haut gauche de l'image
+		Engine.context.translate(x, y);
+		//Rotation de l'image avec radian
+		Engine.context.rotate(angle);
+		//Dessin de l'image
+		Engine.context.drawImage(texture, - tw, - th, Width, Height);
 		Engine.context.restore();
 		
-		//canvas.style.webkitTransform = "rotate("+ jsonVoiture[elm].angle+"deg)";
 		
 	}
 }
 
 //Change la position de l'image
-Engine.ModifVoiture = function () {
-	
+Engine.ModifVoiture = function (couleur) {
+		
 }
 
 //Methode de modification de la case au clic(appeller dans le html)
