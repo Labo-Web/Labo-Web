@@ -1,9 +1,8 @@
 #coding=utf-8
-from iaproject.game.map import Position
+from iaproject.game.common.utils import Position
 from iaproject.game.zone import Zone
 from iaproject.test.ia import GameTest
 from socketio import socketio_manage
-from socketio.mixins import BroadcastMixin
 from socketio.namespace import BaseNamespace
 import gevent
 import json
@@ -15,7 +14,7 @@ def index(request):
     """ Base view to load our template """
     return {}
 
-class GameNamespace(BaseNamespace, BroadcastMixin):
+class GameNamespace(BaseNamespace):
         
     @staticmethod
     def frame_rate(rate=25):

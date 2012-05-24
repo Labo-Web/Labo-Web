@@ -4,27 +4,54 @@ Created on 5 Apr 2012
 @author: Thibault
 '''
 
+from iaproject.game.common.exceptions import BlockTypeNotExistingException
+from iaproject.game.common.utils import CustomEncoder, Position
+import json
+        
+class BlockType(object):
+    '''
+        Enum des Types de bloc
+    '''
+    GRASS = 0
+    ROAD = 1
+    TIRE = 2
+    SAND = 3
+
+class Block(object):
+    
+    def __init__(self, type, position):
+        if not type  in (BlockType.ROAD, BlockType.TIRE, 
+                         BlockType.GRASS, BlockType.SAND):
+            raise BlockTypeNotExistingException
+        self.type = type
+        self.position = position
+        
+    def __unicode__(self):
+        return self.type
+    
+    def __str__(self):
+        return str(self.__unicode__())
+    
+    def json_encode(self):
+        return json.dumps(self.type, cls=CustomEncoder)
+        
 class Map(object):
 
-    def __init__(self, id, type, checkpoint, tiles):
+    def __init__(self, id, grid=None):
         '''
         Constructor
         '''
         self.id = id
-        self.type = type
-        self.checkpoint = checkpoint
-        self.tiles = 1 # liste de tiles
-        
-
-
-class Tile(object):
-    
-    def __init__(self, type, position):
-        self.type = 1
-        self.position = position
-    
-class Position(object):
-    
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
+        #map par defaut avec de l'herbe
+        self.grid = dict()
+        if grid == None:
+            for x in range(60):
+                row = {}
+                for y in xrange(80):
+                    row[y] = Block(BlockType.GRASS, Position(x, y))
+                    self.grid[x] = row
+        else:
+            self.grid = grid
+            
+    def json_encode(self):
+        return json.dumps(self.grid, cls=CustomEncoder)
