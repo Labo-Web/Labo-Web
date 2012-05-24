@@ -4,8 +4,8 @@ Created on 5 Apr 2012
 @author: Thibault
 '''
 
-from iaproject.game.common.exceptions import BlockTypeNotExistingException
-from iaproject.game.common.utils import CustomEncoder, Position
+from iaproject.common.exceptions import BlockTypeNotExistingException
+from iaproject.common.utils import Position
 import json
         
 class BlockType(object):
@@ -55,3 +55,12 @@ class Map(object):
             
     def json_encode(self):
         return json.dumps(self.grid, cls=CustomEncoder)
+    
+    
+class CustomEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Map) or isinstance(obj, Block):
+            return obj.json_encode()
+        else:
+            return json.JSONEncoder.default(self, obj)
+        return json.dumps(self.grid)

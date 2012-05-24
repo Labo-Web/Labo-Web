@@ -1,5 +1,6 @@
 #coding=utf-8
-from iaproject.game.common.utils import Position
+
+from iaproject.common.map import Position
 from iaproject.game.zone import Zone
 from iaproject.test.ia import GameTest
 from socketio import socketio_manage
