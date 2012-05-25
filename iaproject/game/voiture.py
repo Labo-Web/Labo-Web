@@ -135,6 +135,10 @@ class Voiture(object):
         calcul et retour de la position sur les axes x et y
         '''
         radian_angle = math.radians(self._angle)
+   
+        # test ici de la position par rapport a la map
+        # la classe          
+        
         self.position["x"] = self.position["x"] + int(round(self._vitesse * math.cos(radian_angle)))
         self.position["y"] = self.position["y"] + int(round(self._vitesse * math.sin(radian_angle)))
         

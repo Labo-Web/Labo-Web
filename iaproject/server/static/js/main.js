@@ -111,7 +111,6 @@ Engine.DrawVoiture = function() {
 		canvas.style.left = X;
 		canvas.style.top = Y;
 		
-		//TODO
 		//rotation du canvas entier plutot que via css
 		canvas.style.webkitTransform = "rotate("+ jsonVoiture[elm].angle+"deg)";
 		

@@ -28,8 +28,6 @@ class PlayerWrapper(object):
                 }
         print "JSON FRAME VALUE", json
         return json
-
-TypeError
         
 class GameTest(PlayerWrapper):
     
