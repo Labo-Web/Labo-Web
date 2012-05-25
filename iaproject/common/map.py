@@ -3,8 +3,6 @@ Created on 5 Apr 2012
 
 @author: Thibault
 '''
-
-from iaproject.common.exceptions import BlockTypeNotExistingException
 from iaproject.common.utils import Position
 import json
         
@@ -22,7 +20,8 @@ class Block(object):
     def __init__(self, type, position):
         if not type  in (BlockType.ROAD, BlockType.TIRE, 
                          BlockType.GRASS, BlockType.SAND):
-            raise BlockTypeNotExistingException
+            # MAIS OU EST BlockTypeNotExistingException
+            raise 
         self.type = type
         self.position = position
         

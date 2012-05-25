@@ -10,13 +10,14 @@ from iaproject.game.voiture import Voiture
 
 class Action(object):
     
-    def __init__(self, voiture_id):
-        position = {"x":0,"y":0}
-        self.voiture = Voiture(voiture_id,position)
+    def __init__(self, voiture_id, startposition):
+        self.position = startposition
+        self.voiture = Voiture(voiture_id, startposition)
 
 
     def avancer_voiture(self):
         position = self.voiture.avancer()
+        
         return position
         
         
@@ -34,7 +35,5 @@ class Action(object):
         angle_volant = self.voiture.angle_volant = angle_volant
         return angle_volant
     
-    def useBonus(self):
-        if self.voiture.hasBonus:
-            self.voiture.useBonus()
-            
+    def get_vitesse(self):
+        return self.voiture.get_vitesse

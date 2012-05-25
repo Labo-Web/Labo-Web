@@ -1,7 +1,9 @@
 #coding=utf-8
-from iaproject.common.map import Position
+
 from iaproject.game.bonus import Bonus
 import math
+from iaproject.common.utils import Position
+
 
 class Zone(object):
     

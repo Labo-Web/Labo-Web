@@ -110,11 +110,8 @@ class TestActionFonctions(unittest.TestCase):
     
         self.assertEqual(self.voiture._position, {'y':7, 'x':6}, "test position voiture : echec")
 
-class testBonus(unittest.TestCase):
-    def setUp(self):
-        self.action = Action(1)
-        self.action.hasBonus()
-        self.action.useBonus()
+
+
 
 
 if __name__ == '__main__':

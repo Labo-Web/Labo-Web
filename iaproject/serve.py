@@ -1,6 +1,5 @@
 from pyramid.paster import get_app
 from socketio.server import SocketIOServer
-import os, sys
 
 if __name__ == '__main__':
 #    print os.path.dirname(os.path.dirname(__file__))
