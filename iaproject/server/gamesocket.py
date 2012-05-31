@@ -105,6 +105,12 @@ for n in range(0,5):
     def game_run(self):
         for player in self.players:
             player.run()
+            posX = str(int(round(player.actionVoiture.voiture.position.x/10)))
+            posY = str(int(round(player.actionVoiture.voiture.position.y/10)))
+            case = self.map['cases'][posY][posX]
+            if case == 3 or (posX == '24') :
+                player.actionVoiture.voiture._vitesse = 0
+            
             for zone in self.zones:
                 if player.actionVoiture.voiture.zoneDistance(zone.position.x, zone.position.y):
                     player.actionVoiture.voiture.bonusDistance(zone.bonuses)

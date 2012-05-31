@@ -162,8 +162,10 @@ Engine.DrawMap= function () {
 				Case = Engine.Map.cases[y][x];
                 texture = Engine.Tiles[Case];
              }
-			catch(e){texture = Engine.Tiles[0];};
-				Engine.ctx.drawImage(texture,x*Engine.Param.CaseSize,y*Engine.Param.CaseSize)
+			catch(e){
+					texture = Engine.Tiles[0];
+				}
+			Engine.ctx.drawImage(texture,x*Engine.Param.CaseSize,y*Engine.Param.CaseSize);
 		}
 	}
 };
