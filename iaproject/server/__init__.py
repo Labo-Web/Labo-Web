@@ -13,7 +13,10 @@ def simple_route(config, name, url, fn):
 
 def main(global_config, **settings):
     config = Configurator()
+    config.scan('iaproject.server.views')
 
+    config.add_route(name='ia', pattern='/ia')
+    
     simple_route(config, 'index', '/', index)
 
     # The socketio view configuration
