@@ -2,3 +2,4 @@
 *.pyc
 IA Project/Game/Client/Client.tmproj
 *.tmproj
+.DS_Store
