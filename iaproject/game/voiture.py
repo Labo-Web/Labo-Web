@@ -59,7 +59,7 @@ class Voiture(object):
 
     @staticmethod
     def vitesse_max():
-        return 100
+        return 20
     
     @staticmethod
     def vitesse_min():
@@ -115,7 +115,8 @@ class Voiture(object):
             self._vitesse = self.vitesse_max()
         if self._vitesse < self.vitesse_min():
             self._vitesse = self.vitesse_min()
-            
+        
+        
         return self._vitesse
             
             
@@ -156,6 +157,12 @@ class Voiture(object):
         '''
         calcul et retour de la position sur les axes x et y
         '''
+        
+        if self._vitesse > self.vitesse_max():
+            self._vitesse = self.vitesse_max()
+        if self._vitesse < self.vitesse_min():
+            self._vitesse = self.vitesse_min()
+        
         radian_angle = math.radians(self._angle)
         self.position.x = self.position.x + int(round(self._vitesse * math.cos(radian_angle)))
         self.position.y = self.position.y + int(round(self._vitesse * math.sin(radian_angle)))

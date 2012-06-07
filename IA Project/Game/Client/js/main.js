@@ -61,12 +61,34 @@ function init(){
 		Engine.Voitures[1] = new Image();
 		Engine.Voitures[1].src = './img/voiture2.jpg';
 		
+		CheckImgLoading();
 		//On lance la méthode DrawMap
-		Engine.DrawMap();
-		Engine.DrawVoiture();
+		//Engine.DrawMap();
+		//Engine.DrawVoiture();
 		
 	}
 		
+}
+
+function CheckImgLoading()
+{
+	var tiles = Engine.Tiles;
+	var voitures = Engine.Voitures;
+	
+	for(elm in tiles) {
+		if(!Engine.Tiles[elm].complete){
+			setTimeout("CheckImgLoading()",300);
+			return;
+		}	
+	}
+	for(elm in voitures){
+		if(!Engine.Tiles[elm].complete){
+			setTimeout("CheckImgLoading()",300);
+			return
+		}
+	}
+	Engine.DrawMap();
+	Engine.DrawVoiture();
 }
 
 Engine.DrawVoiture = function() {
