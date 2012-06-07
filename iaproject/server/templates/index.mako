@@ -15,7 +15,7 @@
   <body>
 	<div id="container" class="container_16">
 		<div id="mapframe">
-			<canvas id="voiture" class="voiture" width="800" height="600"></canvas>
+			<canvas id="voiture" class="voiture" width=800" height="600"></canvas>
 	    	<canvas id="gameframe" width="800" height="600" onclick="Engine.ChangeCase(this)"></canvas>
 	    </div>
 		<div id="control">

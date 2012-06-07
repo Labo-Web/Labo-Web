@@ -63,7 +63,7 @@ class Voiture(object):
     
     @staticmethod
     def vitesse_min():
-        return 0
+        return -20
     
     @staticmethod
     def angle_volant_max():
@@ -109,7 +109,7 @@ class Voiture(object):
         elif self._vitesse == 0 and acceleration <= 1.0:
             self._vitesse = 0
         else: 
-            self._vitesse = self._vitesse * acceleration
+            self._vitesse = self._vitesse + (self._vitesse  * (acceleration-1)/10)
         
         if self._vitesse > self.vitesse_max():
             self._vitesse = self.vitesse_max()
@@ -168,6 +168,8 @@ class Voiture(object):
         self.position.y = self.position.y + int(round(self._vitesse * math.sin(radian_angle)))
         
         return self.position
+    
+    
     
     
 
