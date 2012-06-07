@@ -1,5 +1,6 @@
 #coding=utf-8
 from iaproject.server.gamesocket import GameNamespace
+from iaproject.server.validationsocket import ValidationNamespace
 from iaproject.test.ia import Ia
 from pyramid.response import Response
 from pyramid.view import view_config
@@ -16,6 +17,7 @@ def socketio_service(request):
     retval = socketio_manage(request.environ,
         {
             '': GameNamespace,
+            '/validation': ValidationNamespace,
         }, request=request
     )
 
@@ -25,6 +27,7 @@ def socketio_service(request):
 def ia(request):
     return Response('damien')
 
+@view_config(route_name='ia',request_method='OPTIONS')
 @view_config(route_name='ia',request_method='POST')
 def ia_post(request):
     
