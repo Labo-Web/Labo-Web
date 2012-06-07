@@ -21,6 +21,7 @@ class TestDeValidation(object):
         self.environment = environment
         self.time_out = time_out
         self.ErrorTable = []
+        self.logtable = []
         self.startclock = time.clock()
         self.TTest = threading.Thread(target=safe_eval, args=(self.utilisateur.ia,self.environment, self.time_out, self))
 
@@ -36,6 +37,7 @@ class TestDeValidation(object):
         
         print (time.clock() - self.startclock)
         print self.utilisateur.actionVoiture.voiture.position.x, self.utilisateur.actionVoiture.voiture.position.y
+        print self.logtable
         print 'Test termine'
         
     

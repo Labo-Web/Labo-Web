@@ -25,7 +25,7 @@ def socketio_service(request):
 def ia(request):
     return Response('damien')
 
-@view_config(route_name='ia',request_method='POST')
+@view_config(route_name='ia',request_method='OPTIONS')
 def ia_post(request):
     
     print "IA CODE: ", request.POST['ia[code]']
