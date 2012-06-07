@@ -10,12 +10,14 @@ from com.safeexecution import SafeEvalError
 from com.safeexecution.SafeEvalError import SafeEvalBuiltinError, \
     SafeEvalAttrError, SafeEvalASTNodeError
 from inspect import Traceback
+import StringIO
 import compiler
+import contextlib
 import inspect
+import sys
 import threading
 import time
 import traceback
-import sys
 
 #----------------------------------------------------------------------
 # Restricted AST nodes & builtins.
@@ -179,7 +181,7 @@ class SafeEvalVisitor(object):
             if attr[:2] != '__':
                 print ' ' * 4, "%-15.15s" % attr, getattr(node, attr)
 
-def exec_timed(code, context, timeout_secs):
+def exec_timed(parent, code, context, timeout_secs):
     """
     Dynamically execute 'code' using 'context' as the global enviroment.
     SafeEvalTimeoutException is raised if execution does not finish within
@@ -205,8 +207,11 @@ def exec_timed(code, context, timeout_secs):
    
     try:
         alarm(timeout_secs)
-        exec code in context
+        with stdoutIO() as s:
+            exec code in context
+        
         signal_finished = True
+        parent.logtable.append(s.getvalue())
     
     except Exception, e:
         exec_errors.append(e.message)
@@ -214,8 +219,16 @@ def exec_timed(code, context, timeout_secs):
         #raise SafeEvalTimeoutException(timeout_secs)
     finally:
         return exec_errors
+    
         
-        
+@contextlib.contextmanager
+def stdoutIO(stdout=None):
+    old = sys.stdout
+    if stdout is None:
+        stdout = StringIO.StringIO()
+    sys.stdout = stdout
+    yield stdout
+    sys.stdout = old        
         
 def safe_eval(code, context = {}, timeout_secs = 1, parent=None):
     
@@ -241,7 +254,7 @@ def safe_eval(code, context = {}, timeout_secs = 1, parent=None):
     checker = SafeEvalVisitor()
 
     if checker.walk(ast):
-        exec_errors = exec_timed(code, context, timeout_secs)
+        exec_errors = exec_timed(parent, code, context, timeout_secs)
   
         if(len(exec_errors) > 0):
             for error in exec_errors:
