@@ -6,6 +6,7 @@ Created on 12 avr. 2012
 from com.exception.safe_eval_exception import SafeEvalTimeoutException, \
     SafeEvalContextException, SafeEvalCodeException, SafeEvalExecException
 from com.helpers.helpers import Helpers
+from com.safeexecution import SafeEvalError
 from com.safeexecution.SafeEvalError import SafeEvalBuiltinError, \
     SafeEvalAttrError, SafeEvalASTNodeError
 from inspect import Traceback
@@ -14,7 +15,7 @@ import inspect
 import threading
 import time
 import traceback
-
+import sys
 
 #----------------------------------------------------------------------
 # Restricted AST nodes & builtins.
@@ -197,7 +198,7 @@ def exec_timed(code, context, timeout_secs):
                 if signal_finished: break
             else:
                 #thread.interrupt_main()
-                exec_errors.append(SafeEvalTimeoutException(secs))
+                exec_errors.append(SafeEvalTimeoutException(secs).message)
         #thread.Start_new_thread(wait, (secs,))
         threading._start_new_thread(wait, (secs,))
 
@@ -208,7 +209,7 @@ def exec_timed(code, context, timeout_secs):
         signal_finished = True
     
     except Exception, e:
-        exec_errors.append(traceback.format_exc())
+        exec_errors.append(e.message)
         
         #raise SafeEvalTimeoutException(timeout_secs)
     finally:
@@ -216,10 +217,9 @@ def exec_timed(code, context, timeout_secs):
         
         
         
-def safe_eval(out_queue, code, context = {}, timeout_secs = 1, parent=None):
+def safe_eval(code, context = {}, timeout_secs = 1, parent=None):
     
     ctx_errkeys, ctx_errors = [], []
-    
     for (key, obj) in context.items():
         if inspect.isbuiltin(obj):
             ctx_errkeys.append(key)
@@ -229,25 +229,27 @@ def safe_eval(out_queue, code, context = {}, timeout_secs = 1, parent=None):
             ctx_errors.append("key '%s' : unallowed module %s" % (key, obj))
 
     if ctx_errors:
-        out_queue.put(SafeEvalContextException(ctx_errkeys, ctx_errors))
-
-    ast = compiler.parse(code)
+        parent.ErrorTable.append(SafeEvalContextException(ctx_errkeys, ctx_errors))
+    
+    try:
+        ast = compiler.parse(code)
+    except Exception:
+        e = sys.exc_info()[0]
+        parent.ErrorTable.append(e)
+        
+        
     checker = SafeEvalVisitor()
 
     if checker.walk(ast):
         exec_errors = exec_timed(code, context, timeout_secs)
-      
+  
         if(len(exec_errors) > 0):
             for error in exec_errors:
-                out_queue.put(error)
-            
+                parent.ErrorTable.append(error)
+        
     else:
-        out_queue.put(SafeEvalCodeException(code, checker.errors))
+        parent.ErrorTable.append(SafeEvalCodeException(code, checker.errors))
         
     parent.on_thread_finished_callback()
-    
-    
-
-        
         
        
