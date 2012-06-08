@@ -5,8 +5,11 @@ Created on 5 avr. 2012
 '''
 
 class SafeEvalException(Exception):
-    "Base class for all safe-eval related errors."
-    pass
+    def __init__(self):
+        self.message = "SafeEvalException"
+        
+    def __str__(self):
+        return self.message
 
 class SafeEvalExecException(SafeEvalException):
     """
@@ -17,10 +20,9 @@ class SafeEvalExecException(SafeEvalException):
       errors = encapsulation of the error
     """
     def __init__(self, errors):
+        super(SafeEvalExecException, self).__init__()
         self.errors = errors
-        
-    def __str__(self):
-        return '\n'.join([str(err) for err in self.errors])
+        self.message = '\n'.join([str(err) for err in self.errors])
 
 class SafeEvalCodeException(SafeEvalException):
     """
@@ -32,10 +34,9 @@ class SafeEvalCodeException(SafeEvalException):
       errors = list of SafeEvalError
     """
     def __init__(self, code, errors):
+        super(SafeEvalCodeException, self).__init__()
         self.code, self.errors = code, errors
-        
-    def __str__(self):
-        return '\n'.join([str(err) for err in self.errors])
+        self.message = '\n'.join([str(err) for err in self.errors])
 
 
 class SafeEvalContextException(SafeEvalException):
@@ -49,9 +50,9 @@ class SafeEvalContextException(SafeEvalException):
                for each key in 'keys'
     """
     def __init__(self, keys, errors):
+        super(SafeEvalContextException, self).__init__()
         self.keys, self.errors = keys, errors
-    def __str__(self):
-        return '\n'.join([str(err) for err in self.errors])
+        self.message = '\n'.join([str(err) for err in self.errors])
         
 class SafeEvalTimeoutException(SafeEvalException):
     """
@@ -62,6 +63,6 @@ class SafeEvalTimeoutException(SafeEvalException):
       timeout = time limit in seconds
     """
     def __init__(self, timeout):
+        super(SafeEvalTimeoutException, self).__init__()
         self.timeout = timeout
-    def __str__(self):
-        return "Timeout limit execeeded (%s secs) during exec" % self.timeout
+        self.message = "Timeout limit execeeded (%s secs) during exec" % self.timeout
