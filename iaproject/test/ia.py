@@ -9,14 +9,14 @@ from iaproject.game.action import Action
 
 class Ia(object):
     
-    def __init__(self, ia_id, texture_id, y_position, stringed_ia):
+    def __init__(self, ia_id, texture_id, y_position, stringed_ia, map):
         self.texture_id = texture_id
-        self.startposition = Position(400, y_position)
+        self.startposition = Position(300, y_position)
         self.ia_id = ia_id
         self.ia = stringed_ia
-        self.actionVoiture = Action(ia_id, self.startposition)
-        JsonActionEnvironnement = {'avancer_voiture':self.actionVoiture.avancer_voiture, 'tourner_voiture':self.actionVoiture.tourner_voiture, 'get_vitesse':self.actionVoiture.get_vitesse,
-                                'accelerer_voiture':self.actionVoiture.accelerer_voiture, 'tourner_volant_voiture':self.actionVoiture.tourner_volant_voiture}
+        self.actionVoiture = Action(ia_id, self.startposition, map)
+        JsonActionEnvironnement = {'tourner_voiture':self.actionVoiture.tourner_voiture, 'get_vitesse':self.actionVoiture.get_vitesse,
+                                'accelerer_voiture':self.actionVoiture.accelerer_voiture, 'tourner_volant_voiture':self.actionVoiture.tourner_volant_voiture, 'get_vision':self.actionVoiture.get_vision}
     
         self.environnement = {'Action':JsonActionEnvironnement}
         

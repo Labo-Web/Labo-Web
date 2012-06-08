@@ -61,9 +61,9 @@ function init(){
 
 		//D�finie les texture des voitures
 		Engine.Voitures[0] = new Image();
-		Engine.Voitures[0].src = '/static/img/voiture.jpg';
+		Engine.Voitures[0].src = '/static/img/voiture1.png';
 		Engine.Voitures[1] = new Image();
-		Engine.Voitures[1].src = '/static/img/voiture2.jpg';
+		Engine.Voitures[1].src = '/static/img/voiture2.png';
 		
 		//On lance la m�thode DrawMap
 		Engine.DrawMap();
@@ -141,6 +141,16 @@ Engine.ChangeCase = function(elm) {
 	//Test permettant de d�terminer si pas de texture d�finir la texture par d�faut : 0
 	if(texture == undefined)
 		Engine.Map.cases[CaseY][CaseX]=0;
+	var text = Engine.Map.cases[CaseY][CaseX];
+	Engine.Map.cases[CaseY-1][CaseX-1]=text;
+	Engine.Map.cases[CaseY-1][CaseX]=text;
+	Engine.Map.cases[CaseY-1][CaseX+1]=text;
+	Engine.Map.cases[CaseY][CaseX-1]=text;
+	Engine.Map.cases[CaseY][CaseX+1]=text;
+	Engine.Map.cases[CaseY+1][CaseX-1]=text;
+	Engine.Map.cases[CaseY+1][CaseX]=text;
+	Engine.Map.cases[CaseY+1][CaseX+1]=text;
+	
 	Engine.DrawMap();
 };
 
