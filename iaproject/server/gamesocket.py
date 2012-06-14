@@ -48,17 +48,25 @@ class GameNamespace(BaseNamespace):
         self.IAscustom = None
         
         code = '''
-if Action["get_vision"](10,0) != 1:
-    Action["accelerer_voiture"](0.1)
-else :
-    Action["accelerer_voiture"](1.5)
-     
-     
-Action["tourner_volant_voiture"](0)
-print "voiture tourne le volant de 5"
+if Action["get_vitesse"]()>5 :
+    Action["accelerer_voiture"](1)
+else:
+    Action["accelerer_voiture"](1.9)
+    
+CaseDevant = Action["get_vision"](6,0)
+if CaseDevant != 1:
+    Action["accelerer_voiture"](0.01)
+CaseDevant = Action["get_vision"](4,0)
+if CaseDevant != 1:
+    
+    CaseBas = Action["get_vision"](3,3)
+    if CaseBas == 1 :
+        Action["tourner_volant_voiture"](5)
+    else:
+        CaseHaut = Action["get_vision"](3,-3)
+        if CaseHaut == 1 :
+           Action["tourner_volant_voiture"](-5)
 
-Action["tourner_voiture"]()
-print "voiture tourne donc de 25"
 
 print "voiture avance"'''
     
@@ -108,7 +116,7 @@ print "voiture avance"'''
         for player in self.players:
             player.run()
             player.actionVoiture.voiture.avancer()
-            
+            player.actionVoiture.voiture.tourner()
             self.check_collision(player.actionVoiture.voiture)
             
             for zone in self.zones:
