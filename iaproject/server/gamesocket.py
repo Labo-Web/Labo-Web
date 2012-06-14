@@ -34,28 +34,6 @@ class GameNamespace(BaseNamespace):
         
         self.mapcustom = None
         
-        #IA D'arrive, ici non presente DON la suite avec 1 user
-        self.IAscustom = None
-        
-        code = '''
-if Action['get_vitesse']() < 10:
-     Action["accelerer_voiture"](1.5)
-     print "voiture accelere a 1.5 car < 10"
-     
-Action["tourner_volant_voiture"](25)
-print "voiture tourne le volant de 25"
-
-Action["tourner_voiture"]()
-print "voiture tourne donc de 25"
-
-for n in range(0,5):
-     Action["avancer_voiture"]()
-     print "voiture avance"'''
-    
-        self.User1 = Ia(ia_id=1, texture_id=0, y_position=300, stringed_ia=code)
-        print 'USER TEST :', self.User1
-        
-        
         # --- MAP
         self.map = None
         
@@ -65,6 +43,30 @@ for n in range(0,5):
             self.map = self.mapcustom
          
         print 'MAPS :', json.dumps(self.map) 
+        
+        #IA D'arrive, ici non presente DON la suite avec 1 user
+        self.IAscustom = None
+        
+        code = '''
+if Action["get_vision"](10,0) != 1:
+    Action["accelerer_voiture"](0.1)
+else :
+    Action["accelerer_voiture"](1.5)
+     
+     
+Action["tourner_volant_voiture"](0)
+print "voiture tourne le volant de 5"
+
+Action["tourner_voiture"]()
+print "voiture tourne donc de 25"
+
+print "voiture avance"'''
+    
+        self.User1 = Ia(ia_id=1, texture_id=0, y_position=70, stringed_ia=code,map=self.map )
+        print 'USER TEST :', self.User1
+        
+        
+        
         
         self.emit("map_json", json.dumps(self.map))
         
@@ -105,11 +107,9 @@ for n in range(0,5):
     def game_run(self):
         for player in self.players:
             player.run()
-            posX = str(int(round(player.actionVoiture.voiture.position.x/10)))
-            posY = str(int(round(player.actionVoiture.voiture.position.y/10)))
-            case = self.map['cases'][posY][posX]
-            if case == 3 or (posX == '24') :
-                player.actionVoiture.voiture._vitesse = 0
+            player.actionVoiture.voiture.avancer()
+            
+            self.check_collision(player.actionVoiture.voiture)
             
             for zone in self.zones:
                 if player.actionVoiture.voiture.zoneDistance(zone.position.x, zone.position.y):
@@ -120,6 +120,31 @@ for n in range(0,5):
         self.emit('frame', json.dumps(self.players_json))
         print "frame emitted !"
         self.players_json["voiture"] = []
+    
+    def check_collision(self, voiture):
+        
+        posX = int(round(voiture.position.x/10))
+        posY = int(round(voiture.position.y/10))
+        case = 3
+        
+        if posX >= 0 and posY >= 0 and posX < 80 and posY < 60:
+            posX = str(posX)
+            posY = str(posY)
+            case = self.map['cases'][posY][posX]
+        
+        #GRASS
+        if case == 0:
+            if voiture._vitesse > 5:
+                voiture._vitesse = 5
+        #SAND
+        elif case == 2:
+            if voiture._vitesse > 2:
+                voiture._vitesse = 2
+        #TIRE
+        elif case == 3:
+            voiture._vitesse *= -1
+            voiture.avancer()
+            voiture._vitesse = 0
         
     def on_start(self, msg):
         '''

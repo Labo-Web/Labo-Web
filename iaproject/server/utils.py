@@ -1,5 +1,5 @@
 from mongoengine import *
-from models import User, IA
+from iaproject.server.models import User, IA
 
 DATABASE_NAME = "ia"
 
@@ -7,7 +7,7 @@ def get_code_by_id_ia(id_ia):
     """Get the python code of a specific ia"""
     connect(DATABASE_NAME)
     try:
-        ia = IA.objects.get(id=id_ia)
+        ia = IA.objects(id=id_ia)
         ia_code = ia.code
         ia.save()
         return { 'success':True, 'result': ia_code }
@@ -20,7 +20,8 @@ def update_ia_points(id_ia, points_to_add):
     """Update points of a specific ia"""
     connect(DATABASE_NAME)
     try:
-        ia = IA.objects.get(id=id_ia)
+#        ia = IA.objects.get(id=id_ia)
+        ia = IA.objects(id=id_ia)
         updated_ia_points = int(ia.points) + int(points_to_add)
         ia.points = str(updated_ia_points)
         ia.save()
