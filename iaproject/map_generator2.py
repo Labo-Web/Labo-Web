@@ -1,10 +1,12 @@
 from driving_map import DrivingMap
 
 if __name__ == '__main__':
-    map = DrivingMap()
-    start_case = map.set_departure_point()
-    map = map.set_default_route()
+    currentmap = DrivingMap()
+    
+    start_case = currentmap.set_departure_point()
+    
+    currentmap.set_default_route()
 
 
-    for line in map.map_matrix:
+    for line in currentmap.map_matrix:
         print line
