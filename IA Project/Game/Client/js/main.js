@@ -40,31 +40,58 @@ function init(){
         Engine.Param.CanvasH = parseInt(canvas.getAttribute("height"));
 		
 		//Définie la taille d'une case
-        Engine.Param.CaseSize=10
+        Engine.Param.CaseSize=16
 		Engine.Param.CaseSizeV=30
         
 		//Définie les différentes images pour les textures
+        //Engine.Tiles[0] = new Image();
+        //Engine.Tiles[0].src = './img/grass.jpg';
+        //Engine.Tiles[1] = new Image();
+        //Engine.Tiles[1].src = './img/road.jpg';      
+		//Engine.Tiles[2] = new Image();
+        //Engine.Tiles[2].src = './img/sand.jpg';
+		//Engine.Tiles[3] = new Image();
+        //Engine.Tiles[3].src = './img/tire.jpg';
+        //Engine.Tiles[4] = new Image();
+        //Engine.Tiles[4].src = './img/start-end.jpg';
         Engine.Tiles[0] = new Image();
-        Engine.Tiles[0].src = './img/grass.jpg';
-        Engine.Tiles[1] = new Image();
-        Engine.Tiles[1].src = './img/road.jpg';      
+        Engine.Tiles[0].src = './img/final/herbe.png';
+		Engine.Tiles[1] = new Image();
+        Engine.Tiles[1].src = './img/final/route.png';
 		Engine.Tiles[2] = new Image();
-        Engine.Tiles[2].src = './img/sand.jpg';
+        Engine.Tiles[2].src = './img/final/sable.png';
 		Engine.Tiles[3] = new Image();
-        Engine.Tiles[3].src = './img/tire.jpg';
-        Engine.Tiles[4] = new Image();
-        Engine.Tiles[4].src = './img/start-end.jpg';
+        Engine.Tiles[3].src = './img/final/eau.png';
+		Engine.Tiles[4] = new Image();
+        Engine.Tiles[4].src = './img/final/bosquet.png';
+		Engine.Tiles[5] = new Image();
+        Engine.Tiles[5].src = './img/final/arbreBas.png';
+		Engine.Tiles[6] = new Image();
+        Engine.Tiles[6].src = './img/final/arbreMillieu.png';
+		Engine.Tiles[7] = new Image();
+        Engine.Tiles[7].src = './img/final/arbreHaut.png';
 
 		//Définie les texture des voitures
 		Engine.Voitures[0] = new Image();
-		Engine.Voitures[0].src = './img/voiture.jpg';
+		Engine.Voitures[0].src = './img/voiture1.png';
 		Engine.Voitures[1] = new Image();
-		Engine.Voitures[1].src = './img/voiture2.jpg';
+		Engine.Voitures[1].src = './img/voiture2.png';
 		
 		CheckImgLoading();
 		//On lance la méthode DrawMap
 		//Engine.DrawMap();
 		//Engine.DrawVoiture();
+		
+		Engine.DrawMap();
+		Engine.DrawVoiture();
+		
+		
+		frames = Engine.Frames;
+		var time=1000;
+		for (key in frames){
+			setTimeout("drawFrame("+key+")", time);
+			time+=40;
+		}
 		
 	}
 		
@@ -87,8 +114,56 @@ function CheckImgLoading()
 			return
 		}
 	}
-	Engine.DrawMap();
-	Engine.DrawVoiture();
+}
+function drawFrame(num)
+{
+	listvoiture = frames[num].voiture;
+	for (k in listvoiture){
+		voiture = listvoiture[k]
+		drawVoiture2(voiture)
+	}
+}
+
+function drawVoiture2(voiture) {
+	
+	var jsonVoiture = voiture;
+	
+	//Permet de reinitialiser le canvas
+	Engine.context.setTransform(1, 0, 0, 1, 0, 0);
+	
+	//
+	Engine.context.clearRect(0,0,800,600);
+	Engine.context.save();
+		
+	var id = jsonVoiture.id;
+
+	//Récupération de la en fonction de l'idtexture du json
+	var textureVoiture = jsonVoiture.texture;
+	var texture = Engine.Voitures[textureVoiture];
+	
+	//Recup hauteur l'argeur image
+	var Width = texture.width;
+	var Height = texture.height;
+	
+	//Convertie angle en radian
+	var angle = jsonVoiture.angle * Math.PI/180;
+	
+	//Récupération des coordonnées au centre de l'image
+	var x = jsonVoiture.x;
+	var y = jsonVoiture.y;
+	
+	//Centre de l'image
+	var tw = Width / 2;
+	var th = Height / 2;
+	
+	//Translation haut gauche de l'image
+	Engine.context.translate(x, y);
+	//Rotation de l'image avec radian
+	Engine.context.rotate(angle);
+	//Dessin de l'image
+	Engine.context.drawImage(texture, - tw, - th, Width, Height);
+	Engine.context.restore();
+		
 }
 
 Engine.DrawVoiture = function() {

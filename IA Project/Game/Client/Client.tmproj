@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>js/voitures.json</string>
+	<string>index.html</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -75,7 +75,7 @@
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>63</integer>
+			<integer>0</integer>
 		</dict>
 		<key>js/map.json</key>
 		<dict>
