@@ -44,20 +44,26 @@ function init(){
         Engine.Param.CanvasH = parseInt(canvas.getAttribute("height"));
 		
 		//D�finie la taille d'une case
-        Engine.Param.CaseSize=10
+        Engine.Param.CaseSize=16
 		Engine.Param.CaseSizeV=30
         
 		//D�finie les diff�rentes images pour les textures
         Engine.Tiles[0] = new Image();
-        Engine.Tiles[0].src = '/static/img/grass.jpg';
-        Engine.Tiles[1] = new Image();
-        Engine.Tiles[1].src = '/static/img/road.jpg';      
+        Engine.Tiles[0].src = '/static/img/final/herbe.png';
+		Engine.Tiles[1] = new Image();
+        Engine.Tiles[1].src = '/static/img/final/route.png';
 		Engine.Tiles[2] = new Image();
-        Engine.Tiles[2].src = '/static/img/sand.jpg';
+        Engine.Tiles[2].src = '/static/img/final/sable.png';
 		Engine.Tiles[3] = new Image();
-        Engine.Tiles[3].src = '/static/img/tire.jpg';
-        Engine.Tiles[4] = new Image();
-        Engine.Tiles[4].src = '/static/img/start-end.jpg';
+        Engine.Tiles[3].src = '/static/img/final/eau.png';
+		Engine.Tiles[4] = new Image();
+        Engine.Tiles[4].src = '/static/img/final/bosquet.png';
+		Engine.Tiles[5] = new Image();
+        Engine.Tiles[5].src = '/static/img/final/arbreBas.png';
+		Engine.Tiles[6] = new Image();
+        Engine.Tiles[6].src = '/static/img/final/arbreMillieu.png';
+		Engine.Tiles[7] = new Image();
+        Engine.Tiles[7].src = '/static/img/final/arbreHaut.png';
 
 		//D�finie les texture des voitures
 		Engine.Voitures[0] = new Image();

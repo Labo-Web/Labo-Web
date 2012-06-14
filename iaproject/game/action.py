@@ -20,17 +20,24 @@ class Action(object):
     def get_vision(self, x, y):
         #voiture_position = self.voiture.position()
         #position = Position(voiture_position.x + x, voiture_position.y + y)
+        hypotenus = math.sqrt(x*x + y*y)
+        angleVison= math.acos(x/hypotenus)
+        if y <0:
+            angleVison = angleVison*-1
         
         radian_angle = math.radians(self.voiture._angle)
-        pos_voiture_X = self.voiture.position.x + int(round(x * math.cos(radian_angle)))
-        pos_voiture_Y = self.voiture.position.y + int(round(y * math.sin(radian_angle)))
+        pos_voiture_X = self.voiture.position.x + int(round((hypotenus*10) * math.cos(radian_angle+ angleVison)))
+        pos_voiture_Y = self.voiture.position.y + int(round((hypotenus*10) * math.sin(radian_angle+ angleVison)))
         
         posX = int(round(pos_voiture_X/10))
         posY = int(round(pos_voiture_Y/10))
         if posX >= 0 and posY >= 0 and posX < 80 and posY < 60:
             posX = str(posX)
             posY = str(posY)
-            return self.map['cases'][posY][posX]
+            CaseValue = self.map['cases'][posY][posX]
+            if CaseValue == 2:
+                CaseValue = CaseValue 
+            return CaseValue
         else:
             return -1
         
