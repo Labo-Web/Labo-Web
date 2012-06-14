@@ -59,11 +59,11 @@ class Voiture(object):
 
     @staticmethod
     def vitesse_max():
-        return 100
+        return 20
     
     @staticmethod
     def vitesse_min():
-        return 0
+        return -20
     
     @staticmethod
     def angle_volant_max():
@@ -91,6 +91,7 @@ class Voiture(object):
         self._vitesse = vitesse
         self._angle = angle
         self._angle_volant = angle_volant
+        self._hasBonus = False
     
     
         
@@ -108,13 +109,14 @@ class Voiture(object):
         elif self._vitesse == 0 and acceleration <= 1.0:
             self._vitesse = 0
         else: 
-            self._vitesse = self._vitesse * acceleration
+            self._vitesse = self._vitesse + (self._vitesse  * (acceleration-1)/10)
         
         if self._vitesse > self.vitesse_max():
             self._vitesse = self.vitesse_max()
         if self._vitesse < self.vitesse_min():
             self._vitesse = self.vitesse_min()
-            
+        
+        
         return self._vitesse
             
             
@@ -127,18 +129,47 @@ class Voiture(object):
         if self._angle > 360:
             self._angle = self._angle % 360
         return self._angle
+    
+    def zoneDistance(self, posX, posY):
+        zoneDist = math.sqrt( pow(self._position.x - posX, 2) + pow(self._position.y - posY, 2) )
         
+        if zoneDist < 2:
+            return True
+        
+        return False
+    
+    def bonusDistance(self, bonuses):
+        for bonus in bonuses:
+            bonusDist = math.sqrt( pow(self._position.x - bonus.position.x, 2) + pow(self._position.y - bonus.position.y, 2) )
+        
+            if bonusDist < 2:
+                self.bindBonus(bonus)
+                
+    def bindBonus(self, bonus):
+        self.bonus = bonus
+        self.hasBonus = True
+        
+    def useBonus(self):
+        self.hasBonus = False
+        # TODO : FINISH !
            
-            
     def avancer(self):
         '''
         calcul et retour de la position sur les axes x et y
         '''
+        
+        if self._vitesse > self.vitesse_max():
+            self._vitesse = self.vitesse_max()
+        if self._vitesse < self.vitesse_min():
+            self._vitesse = self.vitesse_min()
+        
         radian_angle = math.radians(self._angle)
-        self.position["x"] = self.position["x"] + int(round(self._vitesse * math.cos(radian_angle)))
-        self.position["y"] = self.position["y"] + int(round(self._vitesse * math.sin(radian_angle)))
+        self.position.x = self.position.x + int(round(self._vitesse * math.cos(radian_angle)))
+        self.position.y = self.position.y + int(round(self._vitesse * math.sin(radian_angle)))
         
         return self.position
+    
+    
     
     
 

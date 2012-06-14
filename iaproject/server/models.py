@@ -1,10 +1,16 @@
-from mongoengine import *
-
-class User(Document):
-    email = StringField(required=True)
-    name = StringField(max_length=50)
+#coding=utf-8
+from mongoengine.document import Document
+from mongoengine.fields import StringField, BooleanField, ReferenceField
 
 class IA(Document):
-    user = ReferenceField(User)
-    code = StringField(max_length=50)
-    points = StringField(max_length=50)
+    name = StringField()
+    code = StringField()
+    isValidated = BooleanField()
+
+
+class User(Document):
+    ia = ReferenceField(IA)
+    mail = StringField()
+    name = StringField()
+    password = StringField()
+

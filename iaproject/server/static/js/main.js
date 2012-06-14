@@ -1,3 +1,6 @@
+//Déclaration l'objet Engine
+var Engine = {};
+
 //D�claration l'objet Engine
 var Engine = {};
 
@@ -21,7 +24,12 @@ Engine.Voitures = new Array();
 //Function lanc�e quand la page est charg�e (onload dans HTML)
 function init(){
 	//D�claration de la variable s�l�ctionnant l'�l�ment canvas
+
     var canvas = document.getElementById('gameframe');
+	var canvas2 = document.getElementById('voiture');
+	
+	//Applique le contexte au canvas 2
+	Engine.context = canvas2.getContext("2d");
 
 	//Permet de tester si navigateur capable de faire tourner du canvas
     if (canvas.getContext){
@@ -53,68 +61,58 @@ function init(){
 
 		//D�finie les texture des voitures
 		Engine.Voitures[0] = new Image();
-		Engine.Voitures[0].src = '/static/img/voiture.jpg';
+		Engine.Voitures[0].src = '/static/img/voiture1.png';
 		Engine.Voitures[1] = new Image();
-		Engine.Voitures[1].src = '/static/img/voiture2.jpg';
+		Engine.Voitures[1].src = '/static/img/voiture2.png';
 		
 		//On lance la m�thode DrawMap
 		Engine.DrawMap();
 		Engine.DrawVoiture();
-		}
+	}
+		
 }
-
-
-Engine.log = function log(msg) {
-    var control = $('#engine_log');
-    control.html(control.html() + msg + '<br/>');
-    control.scrollTop(control.scrollTop() + 1000);
-  }
 
 Engine.DrawVoiture = function() {
 	
 	var jsonVoiture = Engine.Voiture.voiture;
 	
-	for (elm in jsonVoiture) {
+	//Permet de reinitialiser le canvas
+	Engine.context.setTransform(1, 0, 0, 1, 0, 0);
+	
+	//
+	Engine.context.clearRect(0,0,800,600);
+	Engine.context.save();
+	
+	for (elm in jsonVoiture) {	
 		
 		var id = jsonVoiture[elm].id;
-		
+
 		//R�cup�ration de la en fonction de l'idtexture du json
 		var textureVoiture = jsonVoiture[elm].texture;
 		var texture = Engine.Voitures[textureVoiture];
 		
+		//Recup hauteur l'argeur image
 		var Width = texture.width;
 		var Height = texture.height;
 		
-		//Cr�ation et Assignement les attributs aux canvas auto-g�n�r�s
-		var generateCanvas = document.createElement('canvas');
-		generateCanvas.setAttribute ("class", "voiture");
-		generateCanvas.setAttribute ("id", "voiture"+id);
-		generateCanvas.setAttribute ("width", Width);
-		generateCanvas.setAttribute ("height", Height);
-		
-		//Ajout de l'�l�ment canvas dans le div conteneurvoiture
-		var div = document.getElementById("conteneurvoiture");
-		div.appendChild(generateCanvas);
-		
-		//R�cup�ration dans le dom du canvas correspondant à l'id du json
-		var canvas = document.getElementById("voiture"+id);
-		var context = canvas.getContext("2d");
+		//Convertie angle en radian
+		var angle = jsonVoiture[elm].angle * Math.PI/180;
 		
 		//R�cup�ration des coordonn�es au centre de l'image
-		var X = jsonVoiture[elm].x - Width / 2;
-		var Y = jsonVoiture[elm].y - Height / 2;
+		var x = jsonVoiture[elm].x;
+		var y = jsonVoiture[elm].y;
 		
-		//Cr�ation de l'image dans le canvas
-		context.drawImage(texture,0,0)
+		//Centre de l'image
+		var tw = Width / 2;
+		var th = Height / 2;
 		
-		//Positionnement du canvas sur la carte avec x, y et angle
-		canvas.style.left = X;
-		canvas.style.top = Y;
-		
-		//TODO
-		//rotation du canvas entier plutot que via css
-		canvas.style.webkitTransform = "rotate("+ jsonVoiture[elm].angle+"deg)";
-		
+		//Translation haut gauche de l'image
+		Engine.context.translate(x, y);
+		//Rotation de l'image avec radian
+		Engine.context.rotate(angle);
+		//Dessin de l'image
+		Engine.context.drawImage(texture, - tw, - th, Width, Height);
+		Engine.context.restore();
 		
 		
 	}
@@ -123,7 +121,7 @@ Engine.DrawVoiture = function() {
 //Methode de modification de la case au clic(appeller dans le html)
 Engine.ChangeCase = function(elm) {
 	
-	//D�clare une variable x, y d�finissant la quand on clique la valeur x dans la fenêtre
+	//D�clare une variable x, y d�finissant la quand on clique la valeur x dans la fen�tre
 	var clickX = window.event.x-elm.offsetLeft;
 	var clickY = window.event.y-elm.offsetTop;
 	
@@ -143,6 +141,16 @@ Engine.ChangeCase = function(elm) {
 	//Test permettant de d�terminer si pas de texture d�finir la texture par d�faut : 0
 	if(texture == undefined)
 		Engine.Map.cases[CaseY][CaseX]=0;
+	var text = Engine.Map.cases[CaseY][CaseX];
+	Engine.Map.cases[CaseY-1][CaseX-1]=text;
+	Engine.Map.cases[CaseY-1][CaseX]=text;
+	Engine.Map.cases[CaseY-1][CaseX+1]=text;
+	Engine.Map.cases[CaseY][CaseX-1]=text;
+	Engine.Map.cases[CaseY][CaseX+1]=text;
+	Engine.Map.cases[CaseY+1][CaseX-1]=text;
+	Engine.Map.cases[CaseY+1][CaseX]=text;
+	Engine.Map.cases[CaseY+1][CaseX+1]=text;
+	
 	Engine.DrawMap();
 };
 
@@ -164,8 +172,10 @@ Engine.DrawMap= function () {
 				Case = Engine.Map.cases[y][x];
                 texture = Engine.Tiles[Case];
              }
-			catch(e){texture = Engine.Tiles[0];};
-				Engine.ctx.drawImage(texture,x*Engine.Param.CaseSize,y*Engine.Param.CaseSize)
+			catch(e){
+					texture = Engine.Tiles[0];
+				}
+			Engine.ctx.drawImage(texture,x*Engine.Param.CaseSize,y*Engine.Param.CaseSize);
 		}
 	}
 };

@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 from pyramid.config import Configurator
 from iaproject.server.views import index, socketio_service
-from iaproject.server.models import DBSession
 
 def simple_route(config, name, url, fn):
     """ Function to simplify creating routes in pyramid 
@@ -14,7 +13,10 @@ def simple_route(config, name, url, fn):
 
 def main(global_config, **settings):
     config = Configurator()
+    config.scan('iaproject.server.views')
 
+    config.add_route(name='ia', pattern='/ia')
+    
     simple_route(config, 'index', '/', index)
 
     # The socketio view configuration
